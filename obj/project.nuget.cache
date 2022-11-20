@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "zsa4VmHR8CTWWsrxuS0m0yGiJlJjTDlf85NV8M6ME9IxTpBQBCXQvPHO8HlHjHXVpaxjnzH+v+dlGktnQwsNgw==",
+  "success": true,
+  "projectFilePath": "/Users/emmaneil/cs334/CS334-Final-Project/CS334-Final-Project.fsproj",
+  "expectedPackageFiles": [
+    "/Users/emmaneil/.nuget/packages/fsharp.core/6.0.6/fsharp.core.6.0.6.nupkg.sha512"
+  ],
+  "logs": []
+}
