@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>CS334_Final_Project</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Combinator.fs" />
+    <Compile Include="Parser.fs" />
+    <Compile Include="Evaluator.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+</Project>
