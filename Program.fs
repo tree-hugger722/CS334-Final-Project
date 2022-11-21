@@ -22,7 +22,15 @@ open Evaluator
 [<EntryPoint>]
 
 let main args = 
-    if args.Length < 1 then
+    
+    let par = pseq (pleft (pmany1 pletter |>> stringify) (pws1)) (pmany1 pletter |>> stringify) (fun a b -> (a, b))
+
+    //let pplate = pseq (pleft ((pmany1 pletter |>> stringify) (pws1))) (pmany1 pletter |>> stringify) (fun a b -> Plate(a, b))
+
+    printf "%A\n" (par (prepare args.[0]))
+    
+    0
+    (*if args.Length < 1 then
         printfn "Usage: dotnet run <season>"
         printfn "Season options: fall, winter, spring, summer"
         exit 1
@@ -31,3 +39,4 @@ let main args =
     | Some ast -> printf "%A\n" (prettyprint (eval ast))
     | None -> printfn "Invalid program"
     0
+    *)
