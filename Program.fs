@@ -5,7 +5,7 @@ open Evaluator
 // Notes from Dan:
 // - Start more generally, with an ingredient type
 // - Create an ingredient Record (like a class)
-//      - Ingredient = Quantity * Unit * Season List * isSeasonal
+//      - Ingredient = Quantity * Unit * Season List * Category
 // - Units could be volume and mass, for example
 // - At a high level, a recipe is a list of ingredients and a list of steps
 // - Lists of ingredients could be inputed through a CSV file (with columns 
@@ -23,20 +23,17 @@ open Evaluator
 
 let main args = 
     
-    let par = pseq (pleft (pmany1 pletter |>> stringify) (pws1)) (pmany1 pletter |>> stringify) (fun a b -> (a, b))
+    //let par = pseq ((pleft (pmany1 pletter) (pws1)) |>> stringify) ((pmany1 pletter) |>> stringify) (fun (a, b) -> (a, b))
 
-    //let pplate = pseq (pleft ((pmany1 pletter |>> stringify) (pws1))) (pmany1 pletter |>> stringify) (fun a b -> Plate(a, b))
-
-    printf "%A\n" (par (prepare args.[0]))
-    
-    0
-    (*if args.Length < 1 then
+    if args.Length < 1 then
         printfn "Usage: dotnet run <season>"
         printfn "Season options: fall, winter, spring, summer"
         exit 1
+
     let expression = parse args.[0]
+    
     match expression with
-    | Some ast -> printf "%A\n" (prettyprint (eval ast))
+    | Some ast -> printf "%A\n" ast
     | None -> printfn "Invalid program"
+    
     0
-    *)
