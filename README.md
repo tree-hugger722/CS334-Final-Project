@@ -13,3 +13,8 @@ A repository holding all code to create a seasonal recipe-generating programming
 ## To check which branches exist:
 
 `git branch`
+
+## to check what files you have changed
+
+`git status'
+
