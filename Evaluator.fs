@@ -50,23 +50,29 @@ let saladGen : Ingredient list =
     [i; i; i; i]
 
 (*
-    helper method to prints out an ingredient
+    helper method that prints out a single ingredient
  *)
 let ingredientPrint (i: Ingredient) = 
-    let Ingredient(q, u, s, c) = i
-    printf "hello"
-
+    match i with
+    |Ingredient(n, q, u, s, c) -> 
+        if q > 1 || q = 0 then
+            printf "%A %As of %s\n" q u n
+        else
+            printf "%A %A of %s\n" q u n
 
 (*
     prints out a list of ingredients
+    NOTE: I get a warning when i call this function because it thinks the expression is missing arguments?
  *)
-let rec prettyprint (i: Ingredient list) = 
+let prettyprint (i: Ingredient list) = 
     printf "Your recipe is: \n"
-    match i with
-    |[] -> printf
-    |x::xs -> 
-        ingredientPrint x
-        prettyprint xs
+    let rec pp i =
+        match i with 
+        |[] -> printf
+        |x::xs -> 
+            ingredientPrint x
+            pp xs 
+    pp i
 
 
 
