@@ -35,5 +35,11 @@ let main args =
     match expression with
     | Some ast -> printf "%A\n" ast
     | None -> printfn "Invalid program"
+
+    let i: Ingredient = Ingredient("lettuce", 0, Cup, [Fall], Green)
+    //ingredientPrint i
+
+    let a = [i; i; i; i; i]
+    prettyprint a
     
     0

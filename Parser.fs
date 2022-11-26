@@ -26,7 +26,7 @@ type Dish =
 | Salad
 
 type Expr = 
-|Plate of Season * string
+|Plate of Season * Dish
 
 let expr, exprImpl = recparser()
 
