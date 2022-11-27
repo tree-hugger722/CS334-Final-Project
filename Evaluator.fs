@@ -1,5 +1,6 @@
 module Evaluator
 open Parser
+open DataReader
 
 (*
 To-Dos:
@@ -16,14 +17,9 @@ Emma: populate the CSV manually, write code to iterate through the CSV and creat
 *)
 
 (*
-let getFallIngredients (rows: list<string * int * string * bool * bool * bool * bool * string>) =
-    List.map(fun (name,quantity,unit,isFall,isWinter,isSummer,isSpring,category) ->  Ingredient(name,quantity,unit,(convertBoolToSeason ([])([isFall; isWinter; isSummer; isSpring])),category)) rows
-*)
-
-(*
     ingredient generator: takes in a food category and returns a random ingredient from that category in the CSV
  *)
-
+ (*
 let ingredientGen (foodCat: Category) : Ingredient = 
     let i: Ingredient = Ingredient("lettuce", 0, Cup, [Fall], Green)
     i
@@ -61,3 +57,4 @@ let prettyprint (i: Ingredient list) =
             ingredientPrint x
             pp xs 
     pp i
+*)

@@ -1,5 +1,6 @@
 ﻿open Combinator
 open Parser
+open DataReader
 open Evaluator
 
 // Notes from Dan:
@@ -42,7 +43,7 @@ let main args =
     //let a = [i; i; i; i; i]
     //prettyprint a
 
-    let ingr_rows = convertRows
+    let ingr_rows = formatInput
 
     printIngredients ingr_rows
 
