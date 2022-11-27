@@ -36,10 +36,12 @@ let main args =
     | Some ast -> printf "%A\n" ast
     | None -> printfn "Invalid program"
 
-    let i: Ingredient = Ingredient("lettuce", 0, Cup, [Fall], Green)
+    //let i: Ingredient = Ingredient("lettuce", 0, Cup, [Fall], Green)
     //ingredientPrint i
 
-    let a = [i; i; i; i; i]
-    prettyprint a
+    //let a = [i; i; i; i; i]
+    //prettyprint a
     
+    printIngredients ingr_rows
+
     0
