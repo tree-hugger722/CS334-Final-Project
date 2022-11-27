@@ -14,6 +14,6 @@ A repository holding all code to create a seasonal recipe-generating programming
 
 `git branch`
 
-## to check what files you have changed
+## To check what files you have changed:
 
 `git status`
