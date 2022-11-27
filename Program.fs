@@ -41,7 +41,9 @@ let main args =
 
     //let a = [i; i; i; i; i]
     //prettyprint a
-    
+
+    let ingr_rows = convertRows
+
     printIngredients ingr_rows
 
     0

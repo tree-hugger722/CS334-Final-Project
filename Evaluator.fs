@@ -56,7 +56,7 @@ let ingredients = DynamicIngredient.Load(ResolutionFolder + "/" + IngredientCSV)
     ingredient type: take a string for ingredient name, an int for quantity (serving size for one person), a
     unit for measurement, list of seasons during which it can be used, and food category
  *)
-type Ingredient = Ingredient of string * int * Unit * Season List * Category
+type Ingredient = {Name:string; Quantity:decimal; Unit:Unit; Season_List: Season List; Category: Category}
 
 // Converts list of four booleans to seasons, according to the CSV season input
 let rec convertBoolToSeason (season_list: Season list) (bool_list: bool list)=
@@ -79,7 +79,7 @@ let convertToCategory (input: string) =
     |"Nut" -> Nut
     |"Dressing" -> Dressing
     |"Fruit" -> Fruit
-    |"Vegetable" -> Fruit
+    |"Vegetable" -> Vegetable
     | _ -> failwith "Undefined food category"
 
 // Converts string to Unit Type
@@ -96,16 +96,17 @@ let convertToUnit (input: string) =
     | _ -> failwith "Undefined unit of food"
 
 // Organize data from CSV
-let ingr_rows = 
+let convertRows = 
         ingredients.Rows 
-            |> Seq.map (fun row -> row.Name, row.Quantity, convertToUnit row.Unit, convertBoolToSeason [] [row.Fall; row.Winter; row.Summer; row.Spring], convertToCategory row.Category)
-            |> Seq.sortBy (fun (name, _, _, _, _) -> name)
+            |> Seq.map (fun row -> {Name=row.Name; Quantity=row.Quantity; Unit=(convertToUnit row.Unit); Season_List=(convertBoolToSeason ([]) ([row.Fall; row.Winter; row.Summer; row.Spring])); Category=(convertToCategory row.Category);})
+            |> Seq.sortBy (fun ingredient -> ingredient.Category)
             |> Seq.toList
 
 // Test function to print out ingredient type
-let printIngredients (rows: seq<string * decimal * Unit * Season list * Category>) =
-    for (name, quantity, unit, season_list, category) in rows do
-        printfn "%s, %f, %A, %A, %A" name quantity unit season_list category
+let printIngredients (rows: Ingredient list) =
+    for ingredient in rows do
+        printfn "%A" ingredient
+       //printfn "%s, %f, %A, %A, %A" ingredient.Name ingredient.Quantity ingredient.Unit ingredient.Season_List ingredient.Category
 
 (*
 let getFallIngredients (rows: list<string * int * string * bool * bool * bool * bool * string>) =
