@@ -1,6 +1,8 @@
 ﻿open Combinator
 open Parser
 open DataReader
+open ListGenerator
+open Tests
 open Evaluator
 
 // Notes from Dan:
@@ -43,8 +45,8 @@ let main args =
     //let a = [i; i; i; i; i]
     //prettyprint a
 
-    let ingr_rows = formatInput
-
-    printIngredients ingr_rows
+    // Run a couple of tests for generating seasonal ingredient lists  
+    testIngredientGeneration
+    testSeasonalIngredientLists
 
     0
