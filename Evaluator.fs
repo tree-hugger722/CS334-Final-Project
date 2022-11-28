@@ -15,12 +15,13 @@ let ran (r: Random) xs = xs |> Seq.sortBy (fun _ -> r.Next())
     ingredient generator: takes in a food category + season and returns a random ingredient from that season/category from CVS
  *)
 let rec ingredientGen (foodCat: Category) (season: Season) = 
-    let ingredientsList = getSeasonalIngredients (ingr_list) (season)
-    let a = ingredientsList |> ran (Random ()) |> Seq.head 
-    if a.Category = foodCat then
-        a 
-    else
-        ingredientGen (foodCat) (season)
+    let ingredientsList = getCategoryIngredients (getSeasonalIngredients (ingr_list) (season)) (foodCat)
+    let chosenIngredient = ingredientsList |> ran (Random ()) |> Seq.head 
+    // if a.Category = foodCat then
+    //     a 
+    // else
+    //     ingredientGen (foodCat) (season)
+    chosenIngredient
 
 (*
     salad generator: returns a list of ingredients for salad
