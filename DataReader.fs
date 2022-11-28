@@ -2,6 +2,7 @@ module DataReader
 open Parser
 open FSharp.Data
 
+
 (*
     Code to process the CSV file containing the list of possible ingredients for recipes
     Opens the CSV file and creates a list of objects of type Ingredient
@@ -85,7 +86,7 @@ let convertToUnit (input: string) =
     |"Bunch" -> Bunch
     | _ -> failwith "Undefined unit of food"
 
-// Organize data from CSV into a list of Ingredi
+// Organize data from CSV into a list of Ingredients
 let formatInput = 
         ingredients.Rows 
             |> Seq.map (fun row -> {Name=row.Name; Quantity=row.Quantity; Unit=(convertToUnit row.Unit); Season_List=(convertBoolToSeason ([]) ([row.Fall; row.Winter; row.Summer; row.Spring])); Category=(convertToCategory row.Category);})
