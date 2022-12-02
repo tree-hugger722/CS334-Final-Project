@@ -1,0 +1,11 @@
+
+By December 4th
+    1. Concatenate the string/get input out of quotes -Anna
+    2. Update the CSV - Emma
+    3. Add soup/side dish generators - Anna
+    4. Add more categories to salad generator (cheese, nut)
+    5. Draft Project Specification - Emma (a,b,c) and Anna (d,g), both (e,f)
+
+Other Possible Changes
+    1. Define set of ingredient rules (what tastes good together)
+    2. allow for inputs like "fall salad without cheese"
