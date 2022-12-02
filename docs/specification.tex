@@ -1,0 +1,109 @@
+\documentclass[10pt]{article}
+
+% Lines beginning with the percent sign are comments
+% This file has been commented to help you understand more about LaTeX
+
+% DO NOT EDIT THE LINES BETWEEN THE TWO LONG HORIZONTAL LINES
+
+%---------------------------------------------------------------------------------------------------------
+
+% Packages add extra functionality.
+\usepackage{
+	times,
+	graphicx,
+	epstopdf,
+	fancyhdr,
+	amsfonts,
+	amsthm,
+	amsmath,
+	algorithm,
+	algorithmic,
+	xspace,
+	hyperref}
+\usepackage[left=1in,top=1in,right=1in,bottom=1in]{geometry}
+\usepackage{sect sty}	%For centering section headings
+\usepackage{enumerate}	%Allows more labeling options for enumerate environments 
+\usepackage{epsfig}
+\usepackage[space]{grffile}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage[super]{nth}
+\usepackage{array}
+
+% This will set LaTeX to look for figures in the same directory as the .tex file
+\graphicspath{.} % The dot means current directory.
+
+\pagestyle{fancy}
+
+\lhead{\YOURID}
+\chead{\MyLang: Language Specification}
+\rhead{\today}
+\lfoot{CSCI 334: Principles of Programming Languages}
+\cfoot{\thepage}
+\rfoot{Spring 2022}
+
+% Some commands for changing header and footer format
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headwidth}{\textwidth}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% These let you use common environments
+\newtheorem{claim}{Claim}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{observation}{Observation}
+\newtheorem{question}{Question}
+
+\setlength{\parindent}{3pt}
+
+%---------------------------------------------------------------------------------------------------------
+
+% DON'T CHANGE ANYTHING ABOVE HERE
+
+% Edit below as instructed
+\newcommand{\MyLang}{Recipe Generator}	% Replace MyLang with your language name #
+\newcommand{\PartnerOne}{Anna Owens}	% Replace PartnerOne with your name #
+\newcommand{\PartnerTwo}{Emma Neil}	% Replace PartnerTwo with your partner's name #
+\newcommand{\YOURID}{\PartnerOne{} + \PartnerTwo{}} % Remove \PartnerTwo if working alone.
+
+
+\title{\MyLang: Language Specification}
+\date{Fall 2022}
+\author{\PartnerOne{} and \PartnerTwo{}} % Remove \PartnerTwo if working alone.
+
+\begin{document}
+\maketitle
+
+\vspace{\baselineskip}	% Add some vertical space
+
+% Refer to the project handouts to determine what should go in each of these sections.  Each checkpoint is additive.
+		
+\section{Grammar}
+
+\begin{verbatim}
+<expr> := <Season><ws><Dish>
+<Season> := fall | winter | spring | summer
+<ws> := whitespace
+<Dish> := salad
+\end{verbatim}
+
+
+
+\section{Semantics}
+Our programming language is designed to generate seasonal recipes with New England fruits and vegetables. The minimal version parses a simple string that users can enter via the command line. It expects a single input, a string season, and outputs a list of ingredients for a salad that belong to that season. The semantics are trivially simple because it only expects these. In order to accomplish this parsing and evaluation, we define the following primitives in our language:\\
+
+\textbf{Category} describes the relevant food group to which an Ingredient belongs. Each ingredient (in this version) belongs to one of the following categories: Green, Vegetable, or Dressing.\\
+
+\textbf{Unit} describes the units in which an Ingredient is measured. So far, we've defined the following units of measurement: Cup, Tablespoon, Ounce, Liter, Head, Whole, Ear, Bunch.\\
+
+\textbf{Season} refers to the season of an Ingredient or recipe. The options (unsurprisingly) are: Fall, Winter, Summer, and Spring.\\
+
+\textbf{Dish} refers to the dish category of a recipe. Currently, users can only choose to generate Salad, but eventually we hope to expand this to include Entree and Soup.\\
+
+\textbf{Ingredient} is a record type that contains all the information necessary to choose an ingredient for a recipe, including a string Name, Unit unit, float Quantity (corresponds to the amount of the ingredient necessary for a serving size of one), Season list to which the ingredient belongs, and Category category. 
+
+
+
+% DO NOT DELETE ANYTHING BELOW THIS LINE
+\end{document}

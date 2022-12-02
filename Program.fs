@@ -12,8 +12,9 @@ let main args =
 
 //ensures correct input
     if args.Length < 1 then
-        printfn "Usage: dotnet run <season>"
+        printfn "Usage: dotnet run '<season> <dish>' \n"
         printfn "Season options: fall, winter, spring, summer"
+        printfn "Dish options: salad (so far! stay tuned for our expanding dish options)"
         exit 1
 //parse input
     let expression = parse args.[0]
