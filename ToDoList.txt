@@ -1,6 +1,6 @@
 
 By December 4th
-    1. Concatenate the string/get input out of quotes -Anna
+    1. Concatenate the string/get input out of quotes -Anna - done
     2. Update the CSV - Emma
     3. Add soup/side dish generators - Anna
     4. Add more categories to salad generator (cheese, nut)

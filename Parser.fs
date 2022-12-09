@@ -10,6 +10,7 @@ type Season =
 
 type Dish = 
 | Salad
+| Soup
 
 type Expr = 
 |Plate of Season * Dish
@@ -39,9 +40,10 @@ let season a =
 let dish a = 
     match a with
     | "salad" -> Salad
+    | "soup" -> Soup
     | _ -> failwith "Not a dish."
 
-let pdish = pstr "salad"
+let pdish = pstr "salad" <|> pstr "soup"
 
 exprImpl := pseq ((pleft (pseason_name) (pws1))) ((pdish)) (fun (a, b) -> Plate(season a, dish b))
 
