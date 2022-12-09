@@ -9,14 +9,6 @@ open FSharp.Data
     Inspired by Dan Barowy's Movie Type code (with his permission)
 *)
 
-// Category type describes the relevant food group to which an Ingredient belongs
-type Category = 
-|Green
-|Cheese
-|Nut
-|Dressing
-|Fruit
-|Vegetable
 
 // Unit type describes the units in which an Ingredient is measured 
 type Unit = 
