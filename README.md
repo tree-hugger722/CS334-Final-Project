@@ -1,6 +1,8 @@
 # CS334-Final-Project
 
-A repository holding all code to create a seasonal recipe-generating programming language
+(c) Emma Neil, Anna Owens 2022
+
+A repository holding all code to create a seasonal recipe-generating programming language. This was created as a part of Professor Dan Barowy's Principles of Programming Languages course in Fall 2022.
 
 ## To create a new branch:
 

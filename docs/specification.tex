@@ -62,7 +62,7 @@
 % DON'T CHANGE ANYTHING ABOVE HERE
 
 % Edit below as instructed
-\newcommand{\MyLang}{Recipe Generator}	% Replace MyLang with your language name #
+\newcommand{\MyLang}{RecipeGen}	% Replace MyLang with your language name #
 \newcommand{\PartnerOne}{Anna Owens}	% Replace PartnerOne with your name #
 \newcommand{\PartnerTwo}{Emma Neil}	% Replace PartnerTwo with your partner's name #
 \newcommand{\YOURID}{\PartnerOne{} + \PartnerTwo{}} % Remove \PartnerTwo if working alone.
@@ -78,14 +78,95 @@
 \vspace{\baselineskip}	% Add some vertical space
 
 % Refer to the project handouts to determine what should go in each of these sections.  Each checkpoint is additive.
-		
-\section{Grammar}
+\section{Introduction}
+
+We recently came across Joshua McFadden and Martha Holmberg's award-winning veggie-focused cookbook entitled \textit{Six Seasons: A New Way with Vegetables}. The book divides the year into 6 growing seasons (three of which are in the summer). Each section features recipes that use vegetables and fresh herbs exclusively from that season. McFadden's motivation was founded on several guiding principles: first, vegetables take on a more complex, sweeter, and simply better taste at the peak of their growing season, second, vegetables taste best alongside other vegetables from the same season, and third, that it is possible for beginner chefs to learn how to cook to the seasons.\\
+
+We employ the tenets of the \textit{Six Seasons} cooking philosophy as inspiration for a programming language, grounded in the idea that beginner chefs do not necessarily have to learn how to cook for the seasons through trial and error. Instead, they could write a simple program to generate a scrumptious, seasonal recipe that fits their needs. In the final version of our language, we hope to offer the possibility for our users to enter information about the dish type, season, and ingredients to include or exclude from their recipe.\\
+
+Our project stands out from other sources of recipes in a few important ways. First, and most obviously, it is opinionated in the style of recipes that it generates, choosing exclusively seasonal (to New England) vegetables and combining flavors according to the recipes in \textit{Six Seasons}. Second, it offers the possibility of generating several recipes in a row, if the first recipe isn't to a user's taste. Third, because it is a programming language, the rules dictating flavors can be combined are systematically guided by food science and are more likely to yield yummy dishes.\\
+
+(We haven't quite finalized the name of the language, so please excuse our current boring title)
+
+\section{Design Principles}
+Our language was designed with the following principles in mind:\\
+
+\textbf{Simplicity} It is easy to use because it requires so little input. It also produces output that is simple to understand because it takes the form of a list of ingredients which is familiar to anyone who has seen a recipe.
+
+\textbf{Support for abstraction} Users have to know remarkably little about the rules that make the recipe generator function. In particular, they do not need to know which ingredients are seasonal or which combination would taste best. All they need to know is the kind of dish they would like to make and the season in which they will make this dish.
+
+\textbf{Maintainability and Expandability} We chose to create general types (detailed below) that were flexible enough to enable us to add particular ingredients as we expand the types of dishes a user can program. This flexibility is further achieved by the choice to input new ingredients via a CSV file rather than hardcode them.
+
+\textbf{Regularity} Our parser expects inputs in a very specific order (season, dish type, restrictions) and recognizes a bounded number of input options for each "slot" in the program.
+
+\section{Examples}
+\textbf{Example 1}\\
+Input:
+\begin{verbatim}
+    dotnet run spring salad without nuts
+\end{verbatim}
+Output:
+\begin{verbatim}
+    Butter Lettuce
+    Romaine Lettuce
+    Asparagus
+    Aged Pecorino Romano
+    Pancetta Vinaigrette
+\end{verbatim}
+
+\textbf{Example 2}\\
+Input:
+\begin{verbatim}
+    dotnet run winter soup with butternut squash
+\end{verbatim}
+Output:
+\begin{verbatim}
+    Onion
+    Garlic
+    Butternut Squash
+    Nutmeg
+    Cinnamon
+    Ginger
+    Salt
+    Pepper
+    Olive Oil
+\end{verbatim}
+
+\textbf{Example 2}\\
+Input:
+\begin{verbatim}
+    dotnet run summer entree
+\end{verbatim}
+Output:
+\begin{verbatim}
+    Scallions
+    Red Pepper
+    Potato
+    Ricotta
+    Prosciutto
+    Salt
+    Pepper
+    Olive Oil
+\end{verbatim}
+
+\section{Language Concepts}
+The core concepts a user needs to understand our language is a basic knowledge of seasons and ingredients.  Our language produces recipes for dishes based on seasons, which dictate which vegetables and fruits are best, and dish type, currently only soup and salad.  For seasons, there are four basic season: fall, winter, spring, and summer.  In theory, the user would use the current season.  Since the recipe generator works for all seasons, and because modern grocery stores generally provide many fruits and vegetables year round, a user could theoretically input any season.\\
+
+The second concept a user needs to understand is a dish type.  Currently, our dish type is a salad, but we hope to expand this to include soups, entrees, and side dishes.  A user should have a basic understanding of these, as well as a basic understanding of how to put together salads, as the program does not (yet) have recipe instructions.  However, even if a user does not have any cooking experience, it would only hinder the food they make, not their ability to use the program. Further implementation will have us adding more elements to each dish type, for example, adding nuts and cheese to a salad.  We hope to allow our language to handle cases such as "fall salad with no cheese;" in this case, our user would have to know which ingredients may show up in a soup or salad recipe that they would like to avoid.\\
+
+With seasons and dishes being our key ideas (primitives), combining them is easy. The user must simply pick the dish they would like, and input their season.
+
+
+\section{Grammar} Note: not all of grammar has been implemented yet
 
 \begin{verbatim}
-<expr> := <Season><ws><Dish>
-<Season> := fall | winter | spring | summer
+<expr> := <Season><ws><Dish><ws><connector><ws><category>
+<Season> := fall | winter | spring | early summer | mid summer | late summer
 <ws> := whitespace
-<Dish> := salad
+<Dish> := salad | soup | side dish
+<connector> := with | without
+<category> := green | vegetable | fruit | cheese | nut | dressing | spice
+
 \end{verbatim}
 
 
@@ -102,6 +183,15 @@ Our programming language is designed to generate seasonal recipes with New Engla
 \textbf{Dish} refers to the dish category of a recipe. Currently, users can only choose to generate Salad, but eventually we hope to expand this to include Entree and Soup.\\
 
 \textbf{Ingredient} is a record type that contains all the information necessary to choose an ingredient for a recipe, including a string Name, Unit unit, float Quantity (corresponds to the amount of the ingredient necessary for a serving size of one), Season list to which the ingredient belongs, and Category category. 
+
+\section{Remaining work}
+
+We have many different directions we could go with this program, and are trying to confine our remaining work so we don't get too broad. A first step would be to add new dish types, such as soup, entree or side dishes.  We would have to define exactly what these mean, which is difficult because in the regular world, many different dishes fit under the category of entree or side dish.  We also hope to define a set of ingredient rules (i.e. flavor combinations that work well together), so that instead of our recipe generator being so random, it actually produces combinations that would taste good.\\
+
+We also hope to allow the parser to handle something such as "fall salad without cheese," so that users are capable of making their recipes more specific and personalized.\\
+
+Last, we need to continue adding ingredients to the CSV to broaden our recipe options. We also may divide our summer season into three categories: early summer, mid summer, and late summer, based on the cookbook we are using for inspiration.  Because summer is such a good season for crops, and because these crops differ across the different stages of summer, this would allow for more specific seasonal dishes.
+
 
 
 
