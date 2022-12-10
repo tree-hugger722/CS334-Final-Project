@@ -19,6 +19,7 @@ type Unit =
 |Whole
 |Ear
 |Bunch
+|Clove
 
 
 // Starts looking for CSVs in the same directory as my source code
@@ -62,6 +63,11 @@ let convertToCategory (input: string) =
     |"Dressing" -> Dressing
     |"Fruit" -> Fruit
     |"Vegetable" -> Vegetable
+    |"Spice" -> Spice
+    |"Herb" -> Herb
+    |"Legume" -> Legume
+    |"Onion" -> Onion
+    |"Grain" -> Grain
     | _ -> failwith "Undefined food category"
 
 // Converts string to Unit Type
@@ -75,6 +81,7 @@ let convertToUnit (input: string) =
     |"Whole" -> Whole
     |"Ear" -> Ear
     |"Bunch" -> Bunch
+    |"Clove" -> Clove
     | _ -> failwith "Undefined unit of food"
 
 // Organize data from CSV into a list of Ingredients
