@@ -1,8 +1,8 @@
 ﻿Name,Quantity,Unit,Fall,Winter,Summer,Spring,Category
 Swiss Chard,0.250,Bunch,1,0,1,1,Greens
 Collard Greens,0.250,Bunch,1,0,1,1,Greens
-Kale,0.2555,Bunch,1,0,1,1,Greens
-Arugula,0.2555,Bunch,1,0,1,1,Greens
+Kale,0.250,Bunch,1,0,1,1,Greens
+Arugula,0.250,Bunch,1,0,1,1,Greens
 Butter Lettuce,0.125,Head,0,0,1,1,Greens
 Escarole Lettuce,0.125,Head,0,0,1,1,Greens
 Romaine Lettuce,0.125,Head,0,0,1,1,Greens
@@ -11,7 +11,6 @@ Carrot,4.000,Ounce,1,1,1,0,Vegetable
 Celery,3.000,Ounce,1,0,1,0,Vegetable
 Cucumber,0.250,Whole,0,0,1,0,Vegetable
 Cauliflower,0.250,Head,0,0,1,0,Vegetable
-Fava Beans,8.000,Ounce,0,0,0,1,Vegetable
 Wax Beans,4.000,Ounce,0,0,1,0,Vegetable
 String Beans,4.000,Ounce,0,0,1,0,Vegetable
 Asparagus,4.000,Ounce,0,0,0,1,Vegetable
@@ -32,7 +31,7 @@ Turnip,2.000,Whole,1,1,1,0,Vegetable
 Bell Pepper,1.000,Whole,0,0,1,0,Vegetable
 Radish,0.500,Bunch,0,0,0,1,Vegetable
 Fennel,4.000,Ounce,1,0,1,0,Vegetable
-English Pea,8.000,Ounce,0,0,0,1,Vegetable
+English Peas,8.000,Ounce,0,0,0,1,Vegetable
 Sugar Snap Peas,4.000,Ounce,0,0,0,1,Vegetable
 Potato,4.000,Ounce,0,1,1,0,Vegetable
 Broccoli,4.000,Ounce,1,0,1,0,Vegetable
@@ -40,9 +39,51 @@ Mushrooms,4.000,Ounce,1,1,1,0,Vegetable
 Kohlrabi,4.000,Ounce,0,1,0,0,Vegetable
 Celery Root,2.000,Ounce,0,1,0,0,Vegetable
 Beet,4.000,Ounce,1,1,1,0,Vegetable
+Roasted Walnuts,0.500,Cup,1,1,1,1,Nut
+Roasted Pine Nuts,0.500,Cup,1,1,1,1,Nut
+Roasted Pecans,0.500,Cup,1,1,1,1,Nut
+Roasted Almonds,0.500,Cup,1,1,1,1,Nut
+Roasted Hazelnuts,0.500,Cup,1,1,1,1,Nut
+Roasted Pistachios,0.500,Cup,1,1,1,1,Nut
+Roasted Peanuts,0.500,Cup,1,1,1,1,Nut
+Red Onion,0.500,Cup,1,1,1,0,Onion
+White Onion,0.500,Cup,1,1,1,0,Onion
+Sweet Onion,0.500,Cup,1,1,1,0,Onion
+White Onion,0.500,Cup,1,1,1,0,Onion
+Scallions,0.500,Cup,0,0,1,1,Onion
+Shallots,0.500,Cup,0,0,1,1,Onion
+Ramps,0.500,Cup,0,0,0,1,Onion
+Garlic,1.000,Clove,1,1,1,1,Onion
 Caper-Raisin Vinaigrette,0.125,Cup,1,1,1,1,Dressing
 Pancetta Vinaigrette,0.125,Cup,1,1,1,1,Dressing
 Pine Nut Vinaigrette,0.125,Cup,1,1,1,1,Dressing
 Citrus Vinaigrette,0.125,Cup,1,1,1,1,Dressing
 Simple Red Wine Vinaigrette,0.125,Cup,1,1,1,1,Dressing
 Simple Balsamic Vinaigrette,0.125,Cup,1,1,1,1,Dressing
+Farro,0.500,Cup,1,1,1,1,Grain
+Freekeh,0.500,Cup,1,1,1,1,Grain
+Polenta,0.500,Cup,1,1,1,1,Grain
+Barley,0.500,Cup,1,1,1,1,Grain
+Quinoa,0.500,Cup,1,1,1,1,Grain
+Chickpeas,8.000,Ounce,1,1,1,1,Legume
+Fresh Fava Beans,8.000,Ounce,0,0,0,1,Legume
+Dried Fava Beans,8.000,Ounce,1,1,1,1,Legume
+Black Turtle Beans,8.000,Ounce,1,1,1,1,Legume
+Borlotti Beans,8.000,Ounce,1,1,1,1,Legume
+Aged Pecorino Romano,0.500,Cup,1,1,1,1,Cheese
+Spicy Provolone,0.500,Cup,1,1,1,1,Cheese
+Parmigiano-Reggiano,0.500,Cup,1,1,1,1,Cheese
+Aged Cheddar,0.500,Cup,1,1,1,1,Cheese
+Ricotta,0.500,Cup,1,1,1,1,Cheese
+Burrata,0.500,Cup,1,1,1,1,Cheese
+Mozzarella,0.500,Cup,1,1,1,1,Cheese
+Gruyere,0.500,Cup,1,1,1,1,Cheese
+Fresh Rosemary,0.500,Tablespoon,1,1,1,1,Herb
+Fresh Thyme,0.500,Tablespoon,1,1,1,1,Herb
+Fresh Mint,0.500,Tablespoon,1,1,1,1,Herb
+Fresh Parsley,0.500,Tablespoon,1,1,1,1,Herb
+Fresh Oregano,0.500,Tablespoon,1,1,1,1,Herb
+Fresh Sage,0.500,Tablespoon,1,1,1,1,Herb
+Cumin,0.500,Tablespoon,1,1,1,1,Spice
+Coriander,0.500,Tablespoon,1,1,1,1,Spice
+Curry Powder,0.500,Tablespoon,1,1,1,1,Spice
