@@ -17,15 +17,20 @@ let main args =
         printfn "Dish options: salad (so far! stay tuned for our expanding dish options)"
         exit 1
 //parse input
-    let expression = parse args.[0]
+   // let exprn = args.[0] + " " + args.[1]
+    let exprn = args.[0] 
+    let expression = pattribute (prepare exprn)
 
-//if parse successful, evaluate input
+    printf "expression: %A \n" expression
+
+(*//if parse successful, evaluate input
     match expression with
     | Some ast -> 
         match ast with 
         |Plate(season, dish) -> 
-            let a = prettyprint (saladGen season) 
-            printf "\n"
+            if dish = Salad then
+                let a = prettyprint (saladGen season) 
+                printf "\n"
     | None -> printf "Invalid"
-
+*)
     0

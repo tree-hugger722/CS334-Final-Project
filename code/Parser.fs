@@ -1,6 +1,34 @@
 module Parser
-open Combinator
+open Combinator 
 
+type Category = 
+|Green
+|Cheese
+|Nut
+|Dressing
+|Fruit
+|Vegetable
+|Grain 
+|Onion
+|Herb
+|Legume
+
+type Name = 
+|Category of Category
+|Name of string
+|Combo of Name * Name
+|NoName
+
+type Flag = 
+|Include 
+|Exclude
+
+type Exception = 
+|SoftCore of Flag * List<Name>
+|HardCore of Exception * Exception
+
+type DishType = 
+|Salad
 
 type Season =
 | Fall
@@ -9,20 +37,19 @@ type Season =
 | Summer 
 
 type Dish = 
-| Salad
+|Dish of Season * DishType * Exception 
+
+type Temperature = 
+|Warm 
+|Cold
+
+type Attribute = 
+|Attribute of Temperature 
+|Attributes of Attribute * Attribute
+|NoAttribute 
 
 type Expr = 
-|Plate of Season * Dish
-
-let expr, exprImpl = recparser()
-
-let grammar = pleft expr peof
-
-let pseason_name = pstr "fall" <|> pstr "winter" <|> pstr "summer" <|> pstr "spring"
-
-(*
- function ensures season input is fall/winter/spring/summer, else failure
- *)
+|Recipe of Attribute * Dish 
 
 let season a = 
     match a with
@@ -38,18 +65,89 @@ let season a =
 
 let dish a = 
     match a with
-    | "salad" -> Salad
+    | "salad " -> Salad
     | _ -> failwith "Not a dish."
 
-let pdish = pstr "salad"
+let temp a = 
+    match a with 
+    |"warm" -> Warm
+    |"cold" -> Cold
+    |_ -> failwith "Not a valid temperature"
 
-exprImpl := pseq ((pleft (pseason_name) (pws1))) ((pdish)) (fun (a, b) -> Plate(season a, dish b))
+let flag a = 
+    match a with 
+    |"with" -> Include
+    |"without" -> Exclude
+    |_ -> failwith "please use the words 'with' or 'without'"
+
+let name a = 
+    match a with
+    |"greens" -> Category(Green)
+    |"cheese" -> Category(Cheese)
+    |"nuts" -> Category(Nut)
+    |"dressing" -> Category(Dressing)
+    |"fruit" -> Category(Fruit)
+    |"vegetable" -> Category(Vegetable)
+    |"grains" -> Category(Grain) 
+    |"onion" -> Category(Onion)
+    |"herbs" -> Category(Herb)
+    |"legumes" -> Category(Legume)
+    |str -> Name(str)
+
+//converts a list of softcore exceptions into hardcore exception
+let rec convertAttributes xs = 
+    match xs with 
+    |[x] -> Attribute(temp x)
+    |x::xs' -> Attributes(Attribute(temp x), convertAttributes xs')
+    |_ -> NoAttribute
+
+//converts list of attributes to readable
+let rec convertHardcore xs = 
+    match xs with 
+    |[x] -> x
+    |x::xs' -> HardCore(x, convertHardcore xs')
+    |_ -> SoftCore(Include, [Name("confused")])
+
+
+//let expr, exprImpl = recparser()
+
+//let grammar = pleft expr peof
+
+let ptemp = pleft (pstr "warm") (pws1) <|> pleft (pstr "cold") (pws1)
+
+//return attribute
+let pattribute = (pmany0 ptemp) |>> convertAttributes
+
+let pseas = pstr "fall" <|> pstr "winter"  <|> pstr "summer" <|> pstr "spring" 
+
+let pseason = pleft pseas pws1
+
+let pdishType = pleft (pstr "salad") (pws1) 
+
+let pflag = pleft (pstr "without") (pws1) <|> pleft (pstr "with") (pws1)
+
+let psinglename = pmany1 pletter |>> (fun xs -> System.String.Join("", xs))
+
+
+//parse flag, ignore space, parse name and return softfore(flag, name)
+//this doesn't include with cheese, nuts or with a and without b
+let psoftcore = pseq (pflag) (pname) (fun (a,b) -> SoftCore(flag a, [name b]))
+
+
+//let pdish = pseq (pseq (pseason) (pdishType) (fun (a, b) -> (a, b))) (psoftcore) (fun ((a, b), c) -> Dish(season a, dish b, c))
+
+//exprImpl:= pseq (pattribute) (pdish) (fun (a,b) -> Recipe(temp a, b))
+
+//exprImpl:= Recipe(Attribute(Warm), pdish)
 
 (*
  Function parses input and returns success or failure
  *)
+
+ (*
 let parse(s: string) : Expr option = 
     let input = prepare s
     match grammar input with
     | Success(res, _) -> Some res
     | Failure(_, _) -> None
+*)
