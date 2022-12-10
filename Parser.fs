@@ -113,23 +113,25 @@ let rec convertHardcore xs =
 
 //let grammar = pleft expr peof
 
-let ptemp = pstr "warm " <|> pstr "cold "
+let ptemp = pleft (pstr "warm") (pws1) <|> pleft (pstr "cold") (pws1)
 
-let pattribute = (pmany0 ptemp)   
+//return attribute
+let pattribute = (pmany0 ptemp) |>> convertAttributes
 
 let pseas = pstr "fall" <|> pstr "winter"  <|> pstr "summer" <|> pstr "spring" 
 
 let pseason = pleft pseas pws1
 
-let pdishType = pstr "salad " 
+let pdishType = pleft (pstr "salad") (pws1) 
 
-let pflag = pstr "without" <|> pstr "with"
+let pflag = pleft (pstr "without") (pws1) <|> pleft (pstr "with") (pws1)
 
-let pname = pmany1 pletter |>> (fun xs -> System.String.Join("", xs))
+let psinglename = pmany1 pletter |>> (fun xs -> System.String.Join("", xs))
+
 
 //parse flag, ignore space, parse name and return softfore(flag, name)
 //this doesn't include with cheese, nuts or with a and without b
-let psoftcore = pseq (pleft (pflag) (pws1)) (pname) (fun (a,b) -> SoftCore(flag a, [name b]))
+let psoftcore = pseq (pflag) (pname) (fun (a,b) -> SoftCore(flag a, [name b]))
 
 
 //let pdish = pseq (pseq (pseason) (pdishType) (fun (a, b) -> (a, b))) (psoftcore) (fun ((a, b), c) -> Dish(season a, dish b, c))

@@ -19,9 +19,9 @@ let main args =
 //parse input
    // let exprn = args.[0] + " " + args.[1]
     let exprn = args.[0] 
-    let expression = convertAttributes (pattribute (prepare exprn))
+    let expression = pattribute (prepare exprn)
 
-   // printf "expression: %A \n" expression
+    printf "expression: %A \n" expression
 
 (*//if parse successful, evaluate input
     match expression with
