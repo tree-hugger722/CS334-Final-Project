@@ -86,10 +86,10 @@ let convertToUnit (input: string) =
 
 // Organize data from CSV into a list of Ingredients
 let formatInput = 
-        ingredients.Rows 
-            |> Seq.map (fun row -> {Name=row.Name; Quantity=row.Quantity; Unit=(convertToUnit row.Unit); Season_List=(convertBoolToSeason ([]) ([row.Fall; row.Winter; row.Summer; row.Spring])); Category=(convertToCategory row.Category);})
-            |> Seq.sortBy (fun ingredient -> ingredient.Category)
-            |> Seq.toList
+    ingredients.Rows 
+        |> Seq.map (fun row -> {Name=row.Name; Quantity=row.Quantity; Unit=(convertToUnit row.Unit); Season_List=(convertBoolToSeason ([]) ([row.Fall; row.Winter; row.Summer; row.Spring])); Category=(convertToCategory row.Category);})
+        |> Seq.sortBy (fun ingredient -> ingredient.Category)
+        |> Seq.toList
 
 // Test function to print out ingredient type
 let printIngredients (rows: Ingredient list) =

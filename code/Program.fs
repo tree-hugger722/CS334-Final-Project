@@ -1,5 +1,5 @@
 ﻿open Combinator
-open Parser
+// open Parser
 open DataReader
 open ListGenerator
 open Tests
@@ -10,18 +10,20 @@ open Evaluator
 
 let main args = 
 
-//ensures correct input
-    if args.Length < 1 then
-        printfn "Usage: dotnet run '<season> <dish>' \n"
-        printfn "Season options: fall, winter, spring, summer"
-        printfn "Dish options: salad (so far! stay tuned for our expanding dish options)"
-        exit 1
-//parse input
-   // let exprn = args.[0] + " " + args.[1]
-    let exprn = args.[0] 
-    let expression = pattribute (prepare exprn)
+// //ensures correct input
+//     if args.Length < 1 then
+//         printfn "Usage: dotnet run '<season> <dish>' \n"
+//         printfn "Season options: fall, winter, spring, summer"
+//         printfn "Dish options: salad (so far! stay tuned for our expanding dish options)"
+//         exit 1
+// //parse input
+//    // let exprn = args.[0] + " " + args.[1]
+//     let exprn = args.[0] 
+//     let expression = pattribute (prepare exprn)
 
-    printf "expression: %A \n" expression
+//     printf "expression: %A \n" expression
+
+    printf "%A" (processIngrsToExclude [Name "Butter Lettuce" ])
 
 (*//if parse successful, evaluate input
     match expression with
