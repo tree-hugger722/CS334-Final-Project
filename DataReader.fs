@@ -9,7 +9,6 @@ open FSharp.Data
     Inspired by Dan Barowy's Movie Type code (with his permission)
 *)
 
-
 // Unit type describes the units in which an Ingredient is measured 
 type Unit = 
 |Cup

@@ -1,5 +1,33 @@
 module Parser
-open Combinator
+open Combinator 
+
+type Category = 
+|Green
+|Cheese
+|Nut
+|Dressing
+|Fruit
+|Vegetable
+|Grain 
+|Onion
+|Herb
+|Legume
+
+type Name = 
+|Category of Category
+|Name of string
+|Combo of Name * Name
+
+type Flag = 
+|Include 
+|Exclude
+
+type Exception = 
+|SoftCore of Flag * Name
+|HardCore of Exception * Exception
+
+type DishType = 
+|Salad
 
 type Season =
 | Fall
@@ -8,23 +36,17 @@ type Season =
 | Summer 
 
 type Dish = 
-| Salad
+|Dish of Season * DishType * Exception 
 
-// Category type describes the relevant food group to which an Ingredient belongs
-type Category = 
-|Green
-|Cheese
-|Nut
-|Dressing
-|Fruit
-|Vegetable
+type Temperature = 
+|Warm 
+|Cold
+
+type Attribute = 
+|Temp of Temperature 
 
 type Expr = 
-|Plate of Season * Dish
-
-(*
- function ensures season input is fall/winter/spring/summer, else failure
- *)
+|Recipe of Attribute * Dish 
 
 let season a = 
     match a with
@@ -40,33 +62,79 @@ let season a =
 
 let dish a = 
     match a with
-    | "salad" -> Salad
+    | "salad " -> Salad
     | _ -> failwith "Not a dish."
+
+let temp a = 
+    match a with 
+    |"warm" -> Temp(Warm)
+    |"cold" -> Temp(Cold)
+    |_ -> failwith "Not a valid temperature"
+
+let flag a = 
+    match a with 
+    |"with" -> Include
+    |"without" -> Exclude
+    |_ -> failwith "please use the words 'with' or 'without'"
+
+let name a = 
+    match a with
+    |"greens" -> Category(Green)
+    |"cheese" -> Category(Cheese)
+    |"nuts" -> Category(Nut)
+    |"dressing" -> Category(Dressing)
+    |"fruit" -> Category(Fruit)
+    |"vegetable" -> Category(Vegetable)
+    |"grains" -> Category(Grain) 
+    |"onion" -> Category(Onion)
+    |"herbs" -> Category(Herb)
+    |"legumes" -> Category(Legume)
+    |str -> Name(str)
+
+//converts a list of softcore exceptions into hardcore exception
+let rec convertHardcore xs = 
+    match xs with 
+    |[x] -> x
+    |x::xs' -> HardCore(x, convertHardcore xs')
+    |_ -> SoftCore(Include, Name("confused"))
+
 
 let expr, exprImpl = recparser()
 
 let grammar = pleft expr peof
 
-let pseason_name = pstr "fall" <|> pstr "winter"  <|> pstr "summer" <|> pstr "spring" 
-
-let pdish = pstr "salad" 
-
 let ptemp = pstr "warm" <|> pstr "cold"
 
-let pinclusion = pstr "with" <|> pstr "without"
+let pattribute = ptemp 
 
-let pingredient = 
+let pseas = pstr "fall" <|> pstr "winter"  <|> pstr "summer" <|> pstr "spring" 
 
-exprImpl := pseq ((pleft (pseason_name) (pws1))) ((pdish)) (fun (a, b) -> Plate(season a, dish b))
+let pseason = pleft pseas pws1
+
+let pdishType = pstr "salad " 
+
+let pflag = pstr "without" <|> pstr "with"
+
+let pname = pmany1 pletter |>> (fun xs -> System.String.Join("", xs))
+
+//parse flag, ignore space, parse name and return softfore(flag, name)
+//this doesn't include with cheese, nuts or with a and without b
+let psoftcore = pseq (pleft (pflag) (pws1)) (pname) (fun (a,b) -> SoftCore(flag a, name b))
 
 
+let pdish = pseq (pseq (pseason) (pdishType) (fun (a, b) -> (a, b))) (psoftcore) (fun ((a, b), c) -> Dish(season a, dish b, c))
+
+exprImpl:= pseq ((pleft (pattribute) (pws1))) (pdish) (fun (a,b) -> Recipe(temp a, b))
 
 
 (*
  Function parses input and returns success or failure
  *)
+
+ 
 let parse(s: string) : Expr option = 
     let input = prepare s
     match grammar input with
     | Success(res, _) -> Some res
     | Failure(_, _) -> None
+
