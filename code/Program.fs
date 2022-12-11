@@ -19,7 +19,7 @@ let main args =
 //parse input
    // let exprn = args.[0] + " " + args.[1]
     let exprn = args.[0] 
-    let expression = pattribute (prepare exprn)
+    let expression = parse (exprn)
 
     printf "expression: %A \n" expression
 
