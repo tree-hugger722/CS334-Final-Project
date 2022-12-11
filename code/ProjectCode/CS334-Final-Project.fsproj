@@ -16,7 +16,7 @@
     <Compile Include="DataReader.fs" />
     <Compile Include="ListGenerator.fs" />
     <Compile Include="Evaluator.fs" />
-    <Compile Include="Tests.fs" />
+    <Compile Include="CSVTesting.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

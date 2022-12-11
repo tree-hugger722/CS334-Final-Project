@@ -1,0 +1,151 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/annaowens/cs334/CS334-Final-Project/code/ProjectTests/ProjectTests.fsproj": {}
+  },
+  "projects": {
+    "/Users/annaowens/cs334/CS334-Final-Project/code/ProjectCode/CS334-Final-Project.fsproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/annaowens/cs334/CS334-Final-Project/code/ProjectCode/CS334-Final-Project.fsproj",
+        "projectName": "CS334-Final-Project",
+        "projectPath": "/Users/annaowens/cs334/CS334-Final-Project/code/ProjectCode/CS334-Final-Project.fsproj",
+        "packagesPath": "/Users/annaowens/.nuget/packages/",
+        "outputPath": "/Users/annaowens/cs334/CS334-Final-Project/code/ProjectCode/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/annaowens/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/sdk/6.0.401/FSharp/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "FSharp.Core": {
+              "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
+              "target": "Package",
+              "version": "[6.0.6, )",
+              "generatePathProperty": true
+            },
+            "FSharp.Data": {
+              "target": "Package",
+              "version": "[5.0.2, )",
+              "generatePathProperty": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/annaowens/cs334/CS334-Final-Project/code/ProjectTests/ProjectTests.fsproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/annaowens/cs334/CS334-Final-Project/code/ProjectTests/ProjectTests.fsproj",
+        "projectName": "ProjectTests",
+        "projectPath": "/Users/annaowens/cs334/CS334-Final-Project/code/ProjectTests/ProjectTests.fsproj",
+        "packagesPath": "/Users/annaowens/.nuget/packages/",
+        "outputPath": "/Users/annaowens/cs334/CS334-Final-Project/code/ProjectTests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/annaowens/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "/usr/local/share/dotnet/sdk/6.0.401/FSharp/library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "/Users/annaowens/cs334/CS334-Final-Project/code/ProjectCode/CS334-Final-Project.fsproj": {
+                "projectPath": "/Users/annaowens/cs334/CS334-Final-Project/code/ProjectCode/CS334-Final-Project.fsproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "FSharp.Core": {
+              "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
+              "target": "Package",
+              "version": "[6.0.6, )",
+              "generatePathProperty": true
+            },
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[2.2.8, )",
+              "generatePathProperty": true
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.2.8, )",
+              "generatePathProperty": true
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.1.0, )",
+              "generatePathProperty": true
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[3.1.2, )",
+              "generatePathProperty": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

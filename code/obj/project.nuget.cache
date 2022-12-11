@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "YXIl7p7KcXc3DjjHFMktzUzmlNgf0Tv72J+eKIjeWBRJ8KoaYz87MWrMNZ6ea9hTONun7Au0ko7r06CDWvaFHA==",
+  "success": true,
+  "projectFilePath": "/Users/annaowens/cs334/CS334-Final-Project/code/CS334-Final-Project.fsproj",
+  "expectedPackageFiles": [
+    "/Users/annaowens/.nuget/packages/fsharp.core/6.0.6/fsharp.core.6.0.6.nupkg.sha512",
+    "/Users/annaowens/.nuget/packages/fsharp.data/5.0.2/fsharp.data.5.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
