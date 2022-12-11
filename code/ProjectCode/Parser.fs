@@ -15,8 +15,8 @@ type Category =
 |Spice
 
 type Name = 
-|Category of Category
-|Name of string
+|Cat of Category
+|StrName of string
 |NoName
 
 type Flag = 
@@ -45,7 +45,7 @@ type Temperature =
 |Cold
 
 type Attribute = 
-|Attribute of Temperature 
+|AttributeOne of Temperature 
 |Attributes of Attribute * Attribute
 |NoAttribute 
 
@@ -83,8 +83,8 @@ let temp a =
 
 let rec convertAttributes xs = 
     match xs with 
-    |[x] -> Attribute(temp x)
-    |x::xs' -> Attributes(Attribute(temp x), convertAttributes xs')
+    |[x] -> AttributeOne(temp x)
+    |x::xs' -> Attributes(AttributeOne(temp x), convertAttributes xs')
     |_ -> NoAttribute
 
 let ptemp = pleft (pstr "warm") (pws1) <|> pleft (pstr "cold") (pws1)
@@ -162,18 +162,18 @@ let pflag = (pleft (pstr "without") (pws1) <|> pleft (pstr "with") (pws1)) |>> f
  *)
 let singleName a = 
     match a with
-    |"greens" -> Category(Green)
-    |"cheese" -> Category(Cheese)
-    |"nuts" -> Category(Nut)
-    |"dressing" -> Category(Dressing)
-    |"fruit" -> Category(Fruit)
-    |"vegetable" -> Category(Vegetable)
-    |"grains" -> Category(Grain) 
-    |"onion" -> Category(Onion)
-    |"herbs" -> Category(Herb)
-    |"legumes" -> Category(Legume)
-    |"spices" -> Category(Spice)
-    |str -> Name(str)
+    |"greens" -> Cat(Green)
+    |"cheese" -> Cat(Cheese)
+    |"nuts" -> Cat(Nut)
+    |"dressing" -> Cat(Dressing)
+    |"fruit" -> Cat(Fruit)
+    |"vegetable" -> Cat(Vegetable)
+    |"grains" -> Cat(Grain) 
+    |"onion" -> Cat(Onion)
+    |"herbs" -> Cat(Herb)
+    |"legumes" -> Cat(Legume)
+    |"spices" -> Cat(Spice)
+    |str -> StrName(str)
 
 let rec name xs = 
     match xs with 
