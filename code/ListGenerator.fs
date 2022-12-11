@@ -26,10 +26,10 @@ let getCategoryIngredients (ingredients: Ingredient list) (category: Category)=
 
 // Given a list of ingredients and a namee, outputs the ingredient that belongs to that name, or none
 let getIngrByName (ingredients: Ingredient list) (name: string)=
-    try
-        let ingredient = (ingredients |> List.filter(fun ingr -> (ingr.Name = name)))
-        Some ingredient
-    with _ -> None
+    let ingredient = (ingredients |> List.filter(fun ingr -> (ingr.Name = name)))
+    match ingredient with
+    | [] -> None
+    | xs-> Some xs
 
 let greens = getCategoryIngredients (ingr_list) (Green)
 let veggies = getCategoryIngredients (ingr_list) (Vegetable)
