@@ -32,11 +32,18 @@ open System
 
 (*
     given the name of an ingredient, returns the Ingredient with that name from
-    the entered CSV or None if the ingredient doesn't exist
+    the entered CSV or None (option) if the ingredient doesn't exist
 *)
-let findIngredient (name: string) : Ingredient=
-    // for testing purposes, this just returns a random ingredient
-    {Name=name; Quantity=System.Decimal(0.125); Unit= Head; Season_List=[Summer;Spring]; Category= Green}
+let findIngredient (name: string) =
+    let ingr_list = getIngrByName (ingr_list) (name)
+    match ingr_list with
+    |Some x -> Some x[0]
+    |None -> 
+        printf "The following ingredient does not seem to exist in our database:\n"
+        printf "%s" name
+        printf "\n"
+        None
+
 
 (*
     given a list of Names (strings representing ingredients or categories) to
@@ -47,22 +54,19 @@ let rec processIngrsToExclude (nameList: Name list) : (Ingredient list)=
     | x::xs -> 
         match x with
         | Category(cat) -> 
-            (processIngrsToExclude xs) @ (getCategoryIngredients (ingr_list) (cat))
+            let category = getCategoryIngredients (ingr_list) (cat)
+            match category with
+            | Some ys -> (processIngrsToExclude xs) @ ys
+            | None -> (processIngrsToExclude xs)
+        | Name(name_str) -> 
+            let ingredient = (findIngredient name_str)
+            match ingredient with
+            | Some x -> x::(processIngrsToExclude xs)
+            | None -> 
+                processIngrsToExclude xs
         | NoName -> (processIngrsToExclude xs)
-        // not sure if the typing on this works
-        | Name(name_str) -> 
-            if (findIngredient name_str) != None
-                then findIngredient::(processIngrsToExclude xs)
-                else (processIngrsToExclude xs)
-    | x -> 
-        match x with
-        | Category(cat) -> (getCategoryIngredients (ingr_list) (cat))
-        // not sure if the typing on this works
-        | Name(name_str) -> 
-            if (findIngredient name_str) != None then findIngredient
-        | NoName -> []
     | [] -> []
-        
+
 // (*
 //     given a list of Names (strings representing ingredients or categories) to
 //     include in a recipe, returns a list of ingredients to include
