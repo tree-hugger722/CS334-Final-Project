@@ -13,22 +13,6 @@ open System
 // *)
 // let ran (r: Random) xs = xs |> Seq.sortBy (fun _ -> r.Next())
 
-// (*
-//     exception processer: takes in an exception type and returns a tuple containing
-//     a list of ingredients to include, and a list of ingredients to exclude
-// *)
-// let rec processExceptions (except: Exception) : (Ingredient list * Ingredient list)=
-//     match except with
-//     | Softcore(flag, names) -> 
-//         // find the corresponding ingredient if it exists
-//         match flag with
-//         | Include -> (processIngrsToInclude names) * []
-//         | Exclude -> [] * (processIngrsToExclude names)
-//     | HardCore(except1,except2) -> 
-//         let (xs, ys) = processExceptions except1
-//         let (as, bs) = processExceptions except2
-//         (xs @ as, ys @ bs)
-
 
 (*
     given the name of an ingredient, returns the Ingredient with that name from
@@ -43,7 +27,6 @@ let findIngredient (name: string) =
         printf "%s" name
         printf "\n"
         None
-
 
 (*
     given a list of Names (strings representing ingredients or categories) to
@@ -67,29 +50,43 @@ let rec processIngrsToExclude (nameList: Name list) : (Ingredient list)=
         | NoName -> (processIngrsToExclude xs)
     | [] -> []
 
-// (*
-//     given a list of Names (strings representing ingredients or categories) to
-//     include in a recipe, returns a list of ingredients to include
-// *)
-// let rec processIngrsToInclude (nameList: Name list) : (Ingredient list)=
-//     match nameList with
-//     | x::xs -> 
-//         match x with
-//         | Category(cat) -> []
-//         | NoName -> (processIngrsToInclude xs)
-//         // not sure if the typing on this works
-//         | name_str of string -> 
-//             if (findIngredient name_str) != None
-//                 then findIngredient::(processIngrsToInclude xs) else
-//                 else (processIngrsToInclude xs)
-//     | x -> 
-//         match x with
-//         | Category(cat) -> []
-//         // not sure if the typing on this works
-//         | name_str of string -> 
-//             if (findIngredient name_str) != None then findIngredient
-//         | NoName -> []
-//     | [] -> []
+(*
+    given a list of Names (strings representing ingredients or categories) to
+    include in a recipe, returns a list of ingredients to include
+*)
+let rec processIngrsToInclude (nameList: Name list) : (Ingredient list)=
+    match nameList with
+    | x::xs -> 
+        match x with
+        | Category(cat) -> 
+            printf "We unfortunately do not support the inclusion of food categories.\n"
+            printf "Our recipe generator has an opinion on which categories of foods should be included in a salad :)\n"
+            printf "If you have an ingredient in mind, please try again with the ingredient in the place of the category.\n"
+            processIngrsToExclude xs
+        | Name(name_str) -> 
+            let ingredient = (findIngredient name_str)
+            match ingredient with
+            | Some x -> x::(processIngrsToInclude xs)
+            | None -> 
+                processIngrsToInclude xs
+        | NoName -> (processIngrsToInclude xs)
+    | [] -> []
+
+(*
+    exception processer: takes in an exception type and returns a tuple containing
+    a list of ingredients to include, and a list of ingredients to exclude
+*)
+let rec processExceptions (except: Parser.Exception) : (Ingredient list * Ingredient list)=
+    match except with
+    | SoftCore(flag, names) -> 
+        // find the corresponding ingredient if it exists
+        match flag with
+        | Include -> (processIngrsToInclude names),[]
+        | Exclude -> [],(processIngrsToExclude names)
+    | HardCore(except1,except2) -> 
+        let (xs, ys) = processExceptions except1
+        let (bs, cs) = processExceptions except2
+        (xs @ bs, ys @ cs)
 
 
 // (*
