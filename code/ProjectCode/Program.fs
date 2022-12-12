@@ -36,5 +36,5 @@ let main args =
     // if parse successful, evaluate input
 
     // let expression = Some(Recipe(AttributeOne(Warm),Dish(Fall,Salad,except)))
-    eval expression
+    let a = eval expression
     0

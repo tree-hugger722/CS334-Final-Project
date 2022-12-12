@@ -199,7 +199,12 @@ let eval expression =
     | Some ast -> 
         match ast with 
         |Recipe(attribute, Dish(season, dish_type, recipe_exception)) -> 
-            if dish_type = Salad then
-                let a = prettyprint (saladGen season recipe_exception) 
-                printf "%s\n" a
-    | None -> printf "Invalid"
+            let a = prettyprint (saladGen season recipe_exception) 
+            printf "%s\n" a
+            a
+
+    | None -> 
+            let b = "Invalid"
+            printf "%s\n" b 
+            b
+            
