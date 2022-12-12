@@ -86,7 +86,7 @@ let rec processExceptions (except: Parser.Exception) : (Ingredient list * Ingred
         let (xs, ys) = processExceptions except1
         let (bs, cs) = processExceptions except2
         (xs @ bs, ys @ cs)
-
+    | NoException -> ([],[])
 
 (**************************INGREDIENT GENERATION**************************)
 
