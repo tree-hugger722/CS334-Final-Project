@@ -1,5 +1,5 @@
 ﻿open Combinator
-// open Parser
+open Parser
 open DataReader
 open ListGenerator
 open Tests
@@ -23,7 +23,17 @@ let main args =
 
 //     printf "expression: %A \n" expression
 
-    printf "%A" (processIngrsToExclude [Name "Butter Lettuce" ])
+    // let (included,excluded) = processExceptions (HardCore (
+    //     (SoftCore (Include, [StrName "Romaine Lettuce";Cat Nut])),
+    //     (SoftCore (Exclude, [StrName "Butternut Squash"])))
+    //     )
+    // printf "Included: %A\n" included
+    // printf "Excluded: %A\n" excluded
+
+    let toInclude:Ingredient list = []
+    let toExclude = [{ Name = "Carrot";Quantity = 4.000M;Unit = Ounce;Season_List = [Summer; Winter; Fall];Category = Vegetable };{ Name = "Butternut Squash";Quantity = 5.000M;Unit = Ounce;Season_List = [Winter; Fall];Category = Vegetable };{ Name = "Beet";Quantity = 4.000M;Unit = Ounce;Season_List = [Summer; Winter; Fall];Category = Vegetable }]
+    printf "%s" (prettyprint (ingredientGen (Vegetable) (Winter) (ingr_list) (toInclude) (toExclude)))
+
 
 (*//if parse successful, evaluate input
     match expression with

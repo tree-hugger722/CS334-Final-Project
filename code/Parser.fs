@@ -15,9 +15,8 @@ type Category =
 |Spice
 
 type Name = 
-|Category of Category
-|Name of string
-|Combo of Name * Name
+|Cat of Category
+|StrName of string
 |NoName
 
 type Flag = 
@@ -45,9 +44,9 @@ type Temperature =
 |Cold
 
 type Attribute = 
-|Attribute of Temperature 
+|AttributeOne of Temperature 
 |Attributes of Attribute * Attribute
-|NoAttribute 
+|NoAttribute
 
 type Expr = 
 |Recipe of Attribute * Dish 
