@@ -16,22 +16,31 @@ let testIngredientGeneration =
 let testSeasonalIngredientLists =
     // print all fall ingredients
     printfn "%s" "Fall ingredients: \n"
-    printIngredients fall_ingredients
+    match fall_ingredients with
+    |Some x -> printIngredients x
+    |None -> printf "No ingredients belong to the fall season"
+
 
     // print all winter ingredients
     printfn "%s" "\n"
     printfn "%s" "\n"
     printfn "%s" "Winter ingredients: \n"
-    printIngredients winter_ingredients
+    match winter_ingredients with
+    |Some x -> printIngredients x
+    |None -> printf "No ingredients belong to the winter season"
 
     // print all summer ingredients
     printfn "%s" "\n"
     printfn "%s" "\n"
     printfn "%s" "Summer ingredients: \n"
-    printIngredients summer_ingredients
+    match summer_ingredients with
+    |Some x -> printIngredients x
+    |None -> printf "No ingredients belong to the summer season"
 
     // print all spring ingredients
     printfn "%s" "\n"
     printfn "%s" "\n"
     printfn "%s" "Spring ingredients: \n"
-    printIngredients spring_ingredients
+    match spring_ingredients with
+    |Some x -> printIngredients x
+    |None -> printf "No ingredients belong to the spring season"
