@@ -117,8 +117,9 @@ let getIngredients (foodCat: Category) (season: Season) (ingredients: Ingredient
 
 (*
     ingredient generator: takes in a food category, season, list of ingredients
-    to include, list of ingredients to exclude, and returns a random ingredient
-    from that season/category from CVS
+    to include, list of ingredients to exclude, and returns a list with a single 
+    random ingredient from that season/category from CVS or an empty list, if no
+    ingredient satisfies the requirements
     *)
 let ingredientGen (foodCat: Category) (season: Season) (ingredients: Ingredient list)(includedIngrs: Ingredient list) (excludedIngrs: Ingredient list)= 
     let list = getIngredients (foodCat) (season) (ingredients)
@@ -133,23 +134,31 @@ let ingredientGen (foodCat: Category) (season: Season) (ingredients: Ingredient 
         |false -> Some(ingr)
   
     let listWithoutExcludedIngrs = list |> List.choose excludeChooser
-    let chosenIngredient = listWithoutExcludedIngrs |> ran (Random ()) |> Seq.head
-    chosenIngredient
+    match listWithoutExcludedIngrs with
+    |[] -> []
+    | _ -> [(listWithoutExcludedIngrs |> ran (Random ()) |> Seq.head)]
 
 
-// (*
-//     salad generator: returns a list of ingredients for salad
-//     salad contains (for now): 2 greens (seasonal), one vegetable(seasonal), one dressing
-//  *)
-// let rec saladGen (season: Season): Ingredient list = 
-//     let green = ingredientGen Green season
-//     let veggie1 = ingredientGen Vegetable season
-//     let veggie2 = ingredientGen Vegetable season
-//     let cheese = ingredientGen Cheese season
-//     let nut = ingredientGen Nut season
-//     let dressing = ingredientGen Dressing season
-    
-//     [green;veggie1;veggie2;cheese;nut;dressing]
+(*
+    salad generator: returns a list of ingredients for salad
+    salad contains (for now): 2 greens (seasonal), one vegetable(seasonal), one dressing
+ *)
+let rec saladGen (season: Season) (except: Parser.Exception): Ingredient list = 
+    let (includedIngrs,excludedIngrs)= processExceptions except
+
+    let green = (ingredientGen Green season ingr_list includedIngrs excludedIngrs)
+
+    let veggie1 = (ingredientGen Vegetable season ingr_list includedIngrs excludedIngrs)
+
+    let veggie2 = (ingredientGen Vegetable season ingr_list includedIngrs excludedIngrs)
+
+    let cheese = (ingredientGen Cheese season ingr_list includedIngrs excludedIngrs)
+
+    let nut = (ingredientGen Nut season ingr_list includedIngrs excludedIngrs)
+
+    let dressing = (ingredientGen Dressing season ingr_list includedIngrs excludedIngrs)
+
+    dressing@nut@cheese@veggie2@veggie1@green
 
 (*
     helper method that prints out a single ingredient in recipe format
@@ -158,6 +167,9 @@ let ingredientGen (foodCat: Category) (season: Season) (ingredients: Ingredient 
 let ingredientPrint (i: Ingredient) = 
     if i.Unit = Bunch then 
         let output = sprintf "%A %Aes of %s \n" i.Quantity i.Unit i.Name
+        output
+    else if i.Unit = Whole then 
+        let output = sprintf "%A %ss \n" i.Quantity i.Name
         output
     else
         let output = sprintf "%A %As of %s \n" i.Quantity i.Unit i.Name
@@ -177,3 +189,17 @@ let prettyprint (i: Ingredient list) =
     let finalStr = "Your recipe is: \n" + pp i
     //printf "%s" finalStr
     finalStr
+
+(*
+    top-level evaluator, takes in Some(AST) or None and
+    returns a recipe
+*)
+let eval expression =
+    match expression with
+    | Some ast -> 
+        match ast with 
+        |Recipe(attribute, Dish(season, dish_type, recipe_exception)) -> 
+            if dish_type = Salad then
+                let a = prettyprint (saladGen season recipe_exception) 
+                printf "%s\n" a
+    | None -> printf "Invalid"

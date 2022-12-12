@@ -12,8 +12,10 @@ let main args =
 
 //ensures correct input
     if args.Length < 1 then
-        printfn "Usage: dotnet run '<season> <dish>' \n"
-        printfn "Season options: fall, winter, spring, summer"
+        printfn "Usage: dotnet run '<temperature> <season> <dish> <exceptions>' \n"
+        printfn "Season options (pick one): fall, winter, spring, summer"
+        printfn "Temperature options (pick one): warm, cold"
+        printfn "Exceptions should be formatted as such: 'with Spinach, Beet and without Radish' "
         printfn "Dish options: salad (so far! stay tuned for our expanding dish options)"
         exit 1
 //parse input
@@ -21,16 +23,17 @@ let main args =
     let exprn = args.[0] 
     let expression = parse (exprn)
 
-    printf "expression: %A \n" expression
+    // printf "expression: %A \n" expression
+    // let except = HardCore(SoftCore(Include,[StrName "Red Onion"]),SoftCore(Exclude,[StrName "Butternut Squash"]))
+    // let saladIngrs = saladGen Fall except
+    // printf "%s" (prettyprint saladIngrs)
 
-(*//if parse successful, evaluate input
-    match expression with
-    | Some ast -> 
-        match ast with 
-        |Plate(season, dish) -> 
-            if dish = Salad then
-                let a = prettyprint (saladGen season) 
-                printf "\n"
-    | None -> printf "Invalid"
-*)
+    // let toInclude:Ingredient list = []
+    // let toExclude = [{ Name = "Carrot";Quantity = 4.000M;Unit = Ounce;Season_List = [Summer; Winter; Fall];Category = Vegetable };{ Name = "Butternut Squash";Quantity = 5.000M;Unit = Ounce;Season_List = [Winter; Fall];Category = Vegetable };{ Name = "Beet";Quantity = 4.000M;Unit = Ounce;Season_List = [Summer; Winter; Fall];Category = Vegetable }]
+    // printf "%s" (prettyprint [(ingredientGen (Vegetable) (Winter) (ingr_list) (toInclude) (toExclude))])
+
+    // if parse successful, evaluate input
+
+    // let expression = Some(Recipe(AttributeOne(Warm),Dish(Fall,Salad,except)))
+    eval expression
     0
