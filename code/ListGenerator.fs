@@ -24,7 +24,7 @@ let getCategoryIngredients (ingredients: Ingredient list) (category: Category)=
         Some ingrs
     with _ -> None
 
-// Given a list of ingredients and a namee, outputs the ingredient that belongs to that name, or none
+// Given a list of ingredients and a name, outputs the ingredient that belongs to that name, or none
 let getIngrByName (ingredients: Ingredient list) (name: string)=
     let ingredient = (ingredients |> List.filter(fun ingr -> (ingr.Name = name)))
     match ingredient with
