@@ -19,6 +19,7 @@ type Unit =
 |Whole
 |Ear
 |Bunch
+|Clove
 
 
 // Starts looking for CSVs in the same directory as my source code
@@ -62,6 +63,11 @@ let convertToCategory (input: string) =
     |"Dressing" -> Dressing
     |"Fruit" -> Fruit
     |"Vegetable" -> Vegetable
+    |"Spice" -> Spice
+    |"Herb" -> Herb
+    |"Legume" -> Legume
+    |"Onion" -> Onion
+    |"Grain" -> Grain
     | _ -> failwith "Undefined food category"
 
 // Converts string to Unit Type
@@ -75,14 +81,15 @@ let convertToUnit (input: string) =
     |"Whole" -> Whole
     |"Ear" -> Ear
     |"Bunch" -> Bunch
+    |"Clove" -> Clove
     | _ -> failwith "Undefined unit of food"
 
 // Organize data from CSV into a list of Ingredients
 let formatInput = 
-        ingredients.Rows 
-            |> Seq.map (fun row -> {Name=row.Name; Quantity=row.Quantity; Unit=(convertToUnit row.Unit); Season_List=(convertBoolToSeason ([]) ([row.Fall; row.Winter; row.Summer; row.Spring])); Category=(convertToCategory row.Category);})
-            |> Seq.sortBy (fun ingredient -> ingredient.Category)
-            |> Seq.toList
+    ingredients.Rows 
+        |> Seq.map (fun row -> {Name=row.Name; Quantity=row.Quantity; Unit=(convertToUnit row.Unit); Season_List=(convertBoolToSeason ([]) ([row.Fall; row.Winter; row.Summer; row.Spring])); Category=(convertToCategory row.Category);})
+        |> Seq.sortBy (fun ingredient -> ingredient.Category)
+        |> Seq.toList
 
 // Test function to print out ingredient type
 let printIngredients (rows: Ingredient list) =

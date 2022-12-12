@@ -7,16 +7,29 @@ open DataReader
     and pre-generated lists
 *)
 
-// List containing all ingredients
+// Global list containing all ingredients
 let ingr_list = formatInput
 
 // Given a list of ingredients and a season, outputs all ingredients that belong to that season
 let getSeasonalIngredients (ingredients: Ingredient list) (season: Season)=
-    ingredients |> List.filter(fun ingr -> (ingr.Season_List |> List.contains(season)))
+    try
+        let ingrs = ingredients |> List.filter(fun ingr -> (ingr.Season_List |> List.contains(season)))
+        Some ingrs
+    with _ -> None
 
-// Given a list of ingredients and a season, outputs all ingredients that belong to that season
+// Given a list of ingredients and a category, outputs all ingredients that belong to that category
 let getCategoryIngredients (ingredients: Ingredient list) (category: Category)=
-    ingredients |> List.filter(fun ingr -> (ingr.Category = category))
+    try
+        let ingrs = ingredients |> List.filter(fun ingr -> (ingr.Category = category))
+        Some ingrs
+    with _ -> None
+
+// Given a list of ingredients and a name, outputs the ingredient that belongs to that name, or none
+let getIngrByName (ingredients: Ingredient list) (name: string)=
+    let ingredient = (ingredients |> List.filter(fun ingr -> (ingr.Name = name)))
+    match ingredient with
+    | [] -> None
+    | xs-> Some xs
 
 let greens = getCategoryIngredients (ingr_list) (Green)
 let veggies = getCategoryIngredients (ingr_list) (Vegetable)
