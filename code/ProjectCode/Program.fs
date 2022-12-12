@@ -20,6 +20,7 @@ let main args =
         exit 1
 //parse input
    // let exprn = args.[0] + " " + args.[1]
+   
     let exprn = args.[0] 
     let expression = parse (exprn)
 
