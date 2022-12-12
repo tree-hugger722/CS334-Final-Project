@@ -2,6 +2,10 @@ namespace ProjectTests
 open Parser
 open Combinator
 open Evaluator
+open System
+open System.IO
+open System.Runtime.Serialization.Formatters.Binary
+open Microsoft.FSharp.Core
 
 open System
 open Microsoft.VisualStudio.TestTools.UnitTesting
@@ -19,6 +23,8 @@ type TestClass () =
             Assert.AreEqual(expected, ast)
         |None ->
             Assert.IsTrue(false)
+
+
     
 
         
