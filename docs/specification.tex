@@ -103,50 +103,57 @@ Our language was designed with the following principles in mind:\\
 \textbf{Example 1}\\
 Input:
 \begin{verbatim}
-    dotnet run spring salad without nuts
+    dotnet run "spring salad without nuts, cheese"
 \end{verbatim}
 Output:
 \begin{verbatim}
-    Butter Lettuce
-    Romaine Lettuce
-    Asparagus
-    Aged Pecorino Romano
-    Pancetta Vinaigrette
+Recipe will include one spring green, 2 spring vegetables, and a dressing.  
+One example output could be:
+
+    Your recipe is:
+    0.250 bunches of Butter Lettuce
+    4.000 ounces of Asparagus
+    1 whole Artichoke
+    0.125 cups of Pancetta Vinaigrette
 \end{verbatim}
 
 \textbf{Example 2}\\
 Input:
 \begin{verbatim}
-    dotnet run winter soup with butternut squash
+    dotnet run "warm fall salad without broccoli"
 \end{verbatim}
 Output:
 \begin{verbatim}
-    Onion
-    Garlic
-    Butternut Squash
-    Nutmeg
-    Cinnamon
-    Ginger
-    Salt
-    Pepper
-    Olive Oil
+Recipe will include one fall green, 2 fall vegetables (none of which are broccoli), a nut, a cheese and 
+a dressing.  One example output could be:
+
+    Your recipe is:
+    0.250 bunches of Arugula
+    4.000 bunches of Broccoli
+    5.000 ounces of Butternut Squash
+    0.5000 ounces of Roasted Pine Nuts
+    0.500 cups of Parmigiano-Reggiano
+    0.125 cups of Simple Red Wine Vinaigrette
+    
 \end{verbatim}
 
-\textbf{Example 2}\\
+\textbf{Example 3}\\
 Input:
 \begin{verbatim}
-    dotnet run summer entree
+    dotnet run "summer salad"
 \end{verbatim}
 Output:
 \begin{verbatim}
-    Scallions
-    Red Pepper
-    Potato
-    Ricotta
-    Prosciutto
-    Salt
-    Pepper
-    Olive Oil
+Recipe will include one summer green, 2 summer vegetables, a nut, a cheese and 
+a dressing.  One example output could be:
+
+    Your recipe is:
+    0.250 bunches of Kale
+    4.000 bunches of Cucumber
+    5.000 ounces of Bell Pepper
+    0.5000 ounces of Roasted Walnuts
+    0.500 cups of Aged Pecorino Romano
+    0.125 cups of Citrus Vinaigrette
 \end{verbatim}
 
 \section{Language Concepts}
@@ -160,19 +167,30 @@ With seasons and dishes being our key ideas (primitives), combining them is easy
 \section{Grammar} Note: not all of grammar has been implemented yet
 
 \begin{verbatim}
-<expr> := <Season><ws><Dish><ws><connector><ws><category>
-<Season> := fall | winter | spring | early summer | mid summer | late summer
-<ws> := whitespace
-<Dish> := salad | soup | side dish
-<connector> := with | without
-<category> := green | vegetable | fruit | cheese | nut | dressing | spice
+<expr> := <Attribute><ws><Dish>
+<Attribute> := <Temperature> | (<Attribute>, <Attribute>) | <NoAttribute>
+<ws> := " "
+<Temperature> := "warm"<ws>  | "cold"<ws>
+<NoAttribute> := ""
+<Dish> := (<Season>, <DishType>, <Exception>)
+<Season> := "fall"<ws> | "winter"<ws> | "spring"<ws> | "summer"<ws> 
+<DishType> := "salad"<ws> | "salad"
+<Exception> := SoftCore(<Flag>, <Name>) | HardCore(<SoftCore>, <SoftCore>) | <NoException>
+<NoException> := ""
+<Flag> := "with"<ws> | "without"<ws>
+<Name> := <Category> | <Word> | <NoName> | <Name>(<Comma><ws><Name>)+
+<Word> := <Letter>+
+<Letter> := 'a' | 'b' | ... | 'z'
+<Comma> := ','
+<NoName> := ""
+<Category> := "greens" | "vegetables" | "fruit" | "cheese" | "nuts" | "dressing" | "spice" | "legumes"
 
 \end{verbatim}
 
 
 
 \section{Semantics}
-Our programming language is designed to generate seasonal recipes with New England fruits and vegetables. The minimal version parses a simple string that users can enter via the command line. It expects a single input, a string season, and outputs a list of ingredients for a salad that belong to that season. The semantics are trivially simple because it only expects these. In order to accomplish this parsing and evaluation, we define the following primitives in our language:\\
+Our programming language is designed to generate seasonal recipes with New England fruits and vegetables. The minimal version parses a simple string that users can enter via the command line. It expects a single input, a season and a dish type (salad is our only dish type option) and outputs a list of ingredients for a salad that belong to that season. The semantics are trivially simple because it only expects these. In order to accomplish this parsing and evaluation, we define the following primitives in our language:\\
 
 \textbf{Category} describes the relevant food group to which an Ingredient belongs. Each ingredient (in this version) belongs to one of the following categories: Green, Vegetable, or Dressing.\\
 
