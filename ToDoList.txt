@@ -3,10 +3,12 @@ Minimum updates to complete before submitting the project:
     a) accept exception inputs to INCLUDE certain ingredients
     b) process attributes
     c) generate a different salad based on attribute inputs
-2. Update tests to:
+2. Update parser to:
+    a) Accept multi-word names of ingredients to include or exclude
+3. Update tests to:
     a) test the parser individually
     b) test the evaluator individually
-3. Update specification document to reflect whatever the final version of the project is
+4. Update specification document to reflect whatever the final version of the project is
 
 Stretch updates:
 1. Add flavor combination rules
