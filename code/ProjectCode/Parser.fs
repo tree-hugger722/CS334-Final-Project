@@ -144,21 +144,17 @@ let pflag = (pleft (pstr "without") (pws1) <|> pleft (pstr "with") (pws1)) |>> f
 
 
 (*
-    Name parsers: 
+    Name helper functions: 
         singleName takes a string and returns Name type
             either Name(Category()) or Name(string())
         
         name takes list of strings and returns list of Names
 
-        psinglename parses a sequence of characters, and concatenates into a string
+        combineManyStrings takes a string and a list of strings
+            and combines into a single string separated by " "
         
-        pmulti parses one or more instances of ", STRING"
-
-        pmanynames combines the above parsers, allowing it to parse a sequence of names
-            such as "nuts, cheese, bread" - returns a list of strings
-        
-        pname parses one or more names, separated by ", " and returns a list of Names
-            (Category or strings)
+        combineCharListList combines a char list list and returns
+            a single string
  *)
 let singleName a = 
     match a with
@@ -183,10 +179,56 @@ let rec name xs =
             [singleName x] @ ys
     |[] -> [NoName]
 
+let rec combineManyStrings (str: string, xs: list<string>): string = 
+    match xs with
+    |[x] -> x
+    |x :: xs' ->
+                let ys = combineManyStrings (str, xs')
+                str + " " + x + " " + ys
+    |_ -> failwith "Something going wrong with names of multiple words"
+
+let rec combineCharListList (cs: char list list): string = 
+    match cs with
+    |[] -> ""
+    |[cl] -> stringify cl
+    |cl::cls -> stringify cl + combineCharListList cls
+
+(*
+    Name parsers:
+        psinglename parses a sequence of characters, and concatenates into a string
+        
+        pquote parses letters/whitespace in between two quotes, and returns a single string
+            i.e. "\"butternut squash\""
+
+        pstring parses either a singleName or a quote
+
+        pmulti parses one or more instances of ", STRING"
+
+        pmanynames combines the above parsers, allowing it to parse a sequence of names
+            such as "nuts, cheese, bread" - returns a list of strings
+        
+        pname parses one or more names, separated by ", " and returns a list of Names
+            (Category or strings)
+ *)
+
 let psinglename = pmany1 pletter |>> (fun xs -> System.String.Join("", xs))
-let pmulti =  pmany1 (pright (pstr ", ") (psinglename))
-let pmanynames = pseq (psinglename) (pmulti) (fun (a, b) -> [a] @ b)
-let pname = ((pmanynames) <|> ((psinglename) |>> (fun a -> [a]))) |>> name
+let pquote = pright (pstr"\"") (pleft (pmany1 ((pmany1 pletter) <|> pws1)) (pstr"\"")) |>> combineCharListList
+let pstring = (psinglename <|> pquote)
+let pmulti =  pmany1 (pright (pstr ", ") (pstring))
+let pmanynames = pseq (pstring) (pmulti) (fun (a, b) -> [a] @ b)
+let pname = ((pmanynames) <|> ((pstring) |>> (fun a -> [a]))) |>> name
+
+(*  Parsing a name 
+
+    Case 1: it only has one string as a name
+        - followed by a comma 
+        - followed by a " and"
+        - end of file
+    Case 2: it has multiple strings for names
+        - "ans" + " asda" (many of these, but once its and stop)
+
+ *)
+
 
 (*
     Exception parsers: all return Exception type
