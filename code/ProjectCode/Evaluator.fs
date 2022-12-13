@@ -88,6 +88,24 @@ let rec processExceptions (except: Parser.Exception) : (Ingredient list * Ingred
         (xs @ bs, ys @ cs)
     | NoException -> ([],[])
 
+(*
+    included ingredients map creator: given a list of ingredients to include,
+    returns a map<category, ingredient list>
+*)
+let rec createIncludedIngrsMap (includedIngrs: Ingredient list) =
+    match includedIngrs with
+    |[] -> Map.empty<Category,Ingredient list>
+    |[x] -> (createIncludedIngrsMap []) |> Map.add (x.Category) ([x])
+    |x::xs -> 
+        let containsIngr = (createIncludedIngrsMap xs) |> Map.containsKey (x.Category)
+        if containsIngr = true then
+            (createIncludedIngrsMap xs) |> Map.change x.Category (fun y -> 
+                match y with
+                | Some s -> Some (x::s)
+                | None -> None)
+        else
+            (createIncludedIngrsMap xs) |> Map.add (x.Category) ([x])
+
 
 (**************************INGREDIENT GENERATION**************************)
 (*
@@ -114,7 +132,6 @@ let getIngredients (foodCat: Category) (season: Season) (ingredients: Ingredient
         printf "Invalid season"
         []
 
-
 (*
     random ingredient generator: takes in a food category, season, list of 
     ingredients to exclude, and returns a list with a single random 
@@ -138,62 +155,49 @@ let randomIngrGen (foodCat: Category) (season: Season) (ingredients: Ingredient 
     |[] -> []
     | _ -> [(listWithoutExcludedIngrs |> ran (Random ()) |> Seq.head)]
 
+(*
+    ingredient generator: given a category, season, list of ingredients
+    to consider, list of ingredients to exclude, and a dictionary of ingredients
+    to include, returns either a random ingredient (not in the excluded list) if
+    there are no ingredients of the correct category in the include list, or an 
+    appropriate ingredient from the include list
+*)
+let ingredientGen (foodCat:Category) (season:Season) (ingredients:Ingredient list) (excludedIngrs: Ingredient list) (includeDict:Map<Category,Ingredient list>) =
+    if Map.containsKey (foodCat) (includeDict) then
+        [((Map.find (foodCat) (includeDict)) |> ran (Random ()) |> Seq.head)]
+    else 
+        randomIngrGen (foodCat) (season) (ingredients) (excludedIngrs)
+
 
 (**************************SALAD GENERATION**************************)
+(*
+    list updater: given an ingredient and a list, returns a list with the ingredient removed
+    otherwise returns the original list
+*)
+let updateList (ingredientAdded:Ingredient) (includedIngrs:Ingredient list) =
+    let index = List.tryFindIndex (fun x -> x =ingredientAdded) (includedIngrs)
+    match index with
+    | Some x -> List.removeAt x includedIngrs
+    | None -> includedIngrs
+
 
 (*
-    included ingredients map creator: given a list of ingredients to include,
-    returns a map<category, ingredient list>
-*)
-let rec createIncludedIngrsMap (includedIngrs: Ingredient list) =
-    match includedIngrs with
-    |[] -> Map.empty<Category,Ingredient list>
-    |[x] -> (createIncludedIngrsMap []) |> Map.add (x.Category) ([x])
-    |x::xs -> 
-        let containsIngr = (createIncludedIngrsMap xs) |> Map.containsKey (x.Category)
-        if containsIngr = true then
-            (createIncludedIngrsMap xs) |> Map.change x.Category (fun y -> 
-                match y with
-                | Some s -> Some (x::s)
-                | None -> None)
-        else
-            (createIncludedIngrsMap xs) |> Map.add (x.Category) ([x])
+    salad generator: returns a list of ingredients for salad
+    salad contains (for now): 2 greens (seasonal), one vegetable(seasonal), one dressing
+ *)
+let rec saladGen (season: Season) (except: Parser.Exception): Ingredient list = 
+    let (includedIngrs,excludedIngrs)= processExceptions except
 
-// (*
-//     ingredient generator: given a category, season, list of ingredients
-//     to consider, list of ingredients to exclude, and a dictionary of ingredients
-//     to include, returns either a random ingredient (not in the excluded list) if
-//     there are no ingredients of the correct category in the include list, or an 
-//     appropriate ingredient from the include list
-// *)
-// let ingredientGen (foodCat:Category) (season:Season) (ingredients:Ingredient list) (excludedIngrs: Ingredient list) (includeDict:Map<Category,Ingredient list>) =
-//     if Map.containsKey (foodCat) (includeDict) then
-//         [(Map.find (foodCat) (includeDict))[0]]
-//     else 
-//         randomIngrGen (foodCat) (season) (ingredients) (excludedIngrs)
-
-// (*
-//     salad generator: returns a list of ingredients for salad
-//     salad contains (for now): 2 greens (seasonal), one vegetable(seasonal), one dressing
-//  *)
-// let rec saladGen (season: Season) (except: Parser.Exception): Ingredient list = 
-//     let (includedIngrs,excludedIngrs)= processExceptions except
-
-//     let includeMap= createIncludedIngrsMap includedIngrs
-
-//     let green = (ingredientGen Green season ingr_list includedIngrs excludedIngrs)
-
-//     let veggie1 = (ingredientGen Vegetable season ingr_list includedIngrs excludedIngrs)
-
-//     let veggie2 = (ingredientGen Vegetable season ingr_list includedIngrs excludedIngrs)
-
-//     let cheese = (ingredientGen Cheese season ingr_list includedIngrs excludedIngrs)
-
-//     let nut = (ingredientGen Nut season ingr_list includedIngrs excludedIngrs)
-
-//     let dressing = (ingredientGen Dressing season ingr_list includedIngrs excludedIngrs)
-
-//     dressing@nut@cheese@veggie2@veggie1@green
+    let rec saladIngrGen season ingr_list excludedIngrs includedIngrs list= 
+        match list with
+        | x::xs -> 
+            let includeMap = createIncludedIngrsMap includedIngrs
+            let new_ingredient = (ingredientGen x season ingr_list excludedIngrs includeMap)
+            let newIncludedIngrs = updateList new_ingredient[0] includedIngrs
+            (saladIngrGen season ingr_list excludedIngrs newIncludedIngrs xs)@new_ingredient
+        | [] -> []
+    
+    saladIngrGen season ingr_list excludedIngrs includedIngrs [Green; Vegetable; Vegetable; Cheese; Nut; Dressing]
 
 
 (**************************PRINTING**************************)
@@ -229,21 +233,21 @@ let prettyprint (i: Ingredient list) =
 
 (**************************EVALUATION**************************)
 
-// (*
-//     top-level evaluator, takes in Some(AST) or None and
-//     returns a recipe
-// *)
-// let eval expression =
-//     match expression with
-//     | Some ast -> 
-//         match ast with 
-//         |Recipe(attribute, Dish(season, dish_type, recipe_exception)) -> 
-//             let a = prettyprint (saladGen season recipe_exception) 
-//             printf "%s\n" a
-//             a
+(*
+    top-level evaluator, takes in Some(AST) or None and
+    returns a recipe
+*)
+let eval expression =
+    match expression with
+    | Some ast -> 
+        match ast with 
+        |Recipe(attribute, Dish(season, dish_type, recipe_exception)) -> 
+            let a = prettyprint (saladGen season recipe_exception) 
+            printf "%s\n" a
+            a
 
-//     | None -> 
-//             let b = "Invalid"
-//             printf "%s\n" b 
-//             b
+    | None -> 
+            let b = "Invalid"
+            printf "%s\n" b 
+            b
             
