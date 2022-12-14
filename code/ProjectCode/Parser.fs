@@ -212,8 +212,8 @@ let rec combineCharListList (cs: char list list): string =
  *)
 
 let psinglename = pmany1 pletter |>> (fun xs -> System.String.Join("", xs))
-let pquote = pright (pstr"\"") (pleft (pmany1 ((pmany1 pletter) <|> pws1)) (pstr"\"")) |>> combineCharListList
-let pstring = (psinglename <|> pquote)
+let pquote = pright (pstr"(") (pleft (pmany1 ((pmany1 pletter) <|> pws1)) (pstr")")) |>> combineCharListList
+let pstring = (pquote <|> psinglename)
 let pmulti =  pmany1 (pright (pstr ", ") (pstring))
 let pmanynames = pseq (pstring) (pmulti) (fun (a, b) -> [a] @ b)
 let pname = ((pmanynames) <|> ((pstring) |>> (fun a -> [a]))) |>> name
