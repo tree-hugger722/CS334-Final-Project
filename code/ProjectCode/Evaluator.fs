@@ -5,6 +5,8 @@ open ListGenerator
 open DataReader
 open System
 
+(* NOTE: ingr_list is the list of ingredients populated from an ingredient CSV. See ListGenerator.fs for more information. *)
+
 (*
    helper function randomly sorts list to help get random element
 *)
@@ -16,8 +18,8 @@ let ran (r: Random) xs = xs |> Seq.sortBy (fun _ -> r.Next())
     the entered CSV or None (option) if the ingredient doesn't exist
 *)
 let findIngredient (name: string) =
-    let ingr_list = getIngrByName (ingr_list) (name)
-    match ingr_list with
+    let new_ingr_list = getIngrByName (ingr_list) (name)
+    match new_ingr_list with
     |Some x -> Some x[0]
     |None -> 
         printf "The following ingredient does not seem to exist in our database:\n"
@@ -33,21 +35,22 @@ let findIngredient (name: string) =
 *)
 let rec processIngrsToExclude (nameList: Name list) : (Ingredient list)=
     match nameList with
+    | [] -> []
     | x::xs -> 
         match x with
         | Cat(cat) -> 
             let category = getCategoryIngredients (ingr_list) (cat)
             match category with
-            | Some ys -> (processIngrsToExclude xs) @ ys
+            | Some ys -> 
+                List.append (ys) (processIngrsToExclude xs)
             | None -> (processIngrsToExclude xs)
         | StrName(name_str) -> 
             let ingredient = (findIngredient name_str)
             match ingredient with
-            | Some x -> x::(processIngrsToExclude xs)
-            | None -> 
-                processIngrsToExclude xs
+            | Some y -> 
+                y::(processIngrsToExclude xs)
+            | None -> (processIngrsToExclude xs)
         | NoName -> (processIngrsToExclude xs)
-    | [] -> []
 
 (*
     given a list of Names (strings representing ingredients or categories) to
@@ -58,10 +61,8 @@ let rec processIngrsToInclude (nameList: Name list) : (Ingredient list)=
     | x::xs -> 
         match x with
         | Cat(cat) -> 
-            printf "We unfortunately do not support the inclusion of food categories.\n"
-            printf "Our recipe generator has an opinion on which categories of foods should be included in a salad :)\n"
-            printf "If you have an ingredient in mind, please try again with the ingredient in the place of the category.\n"
-            processIngrsToExclude xs
+            printf "\nWe do not support the inclusion of food categories. Pick an ingredient instead.\n"
+            processIngrsToInclude xs
         | StrName(name_str) -> 
             let ingredient = (findIngredient name_str)
             match ingredient with
@@ -185,19 +186,23 @@ let updateList (ingredientAdded:Ingredient) (includedIngrs:Ingredient list) =
     salad generator: returns a list of ingredients for salad
     salad contains (for now): 2 greens (seasonal), one vegetable(seasonal), one dressing
  *)
-let rec saladGen (season: Season) (except: Parser.Exception): Ingredient list = 
+let saladGen (season: Season) (except: Parser.Exception): Ingredient list = 
     let (includedIngrs,excludedIngrs)= processExceptions except
 
-    let rec saladIngrGen season ingr_list excludedIngrs includedIngrs list= 
-        match list with
+    let rec saladIngrGen season ingr_list excludedIngrs includedIngrs cat_list= 
+        match cat_list with
         | x::xs -> 
             let includeMap = createIncludedIngrsMap includedIngrs
             let new_ingredient = (ingredientGen x season ingr_list excludedIngrs includeMap)
-            let newIncludedIngrs = updateList new_ingredient[0] includedIngrs
-            (saladIngrGen season ingr_list excludedIngrs newIncludedIngrs xs)@new_ingredient
+            if new_ingredient = [] then
+                (saladIngrGen season ingr_list excludedIngrs includedIngrs xs)
+            else
+                let newIncludedIngrs = updateList new_ingredient[0] includedIngrs
+                (saladIngrGen season ingr_list excludedIngrs newIncludedIngrs xs)@new_ingredient
         | [] -> []
     
-    saladIngrGen season ingr_list excludedIngrs includedIngrs [Green; Vegetable; Vegetable; Cheese; Nut; Dressing]
+    let cat_list = [Green; Vegetable; Vegetable; Cheese; Nut; Dressing]
+    saladIngrGen season ingr_list excludedIngrs includedIngrs cat_list
 
 
 (**************************PRINTING**************************)
@@ -228,7 +233,6 @@ let prettyprint (i: Ingredient list) =
             let str = (pp xs) + (ingredientPrint x)
             str
     let finalStr = "Your recipe is: \n" + pp i
-    //printf "%s" finalStr
     finalStr
 
 (**************************EVALUATION**************************)
