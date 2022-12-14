@@ -1,5 +1,7 @@
 module Parser
 open Combinator 
+open System
+
 
 type Category = 
 |Green
@@ -156,8 +158,10 @@ let pflag = (pleft (pstr "without") (pws1) <|> pleft (pstr "with") (pws1)) |>> f
         combineCharListList combines a char list list and returns
             a single string
  *)
-let singleName a = 
-    match a with
+
+let singleName (a: string) = 
+    let b = a.ToLower()
+    match b with
     |"greens" -> Cat(Green)
     |"cheese" -> Cat(Cheese)
     |"nuts" -> Cat(Nut)
@@ -218,17 +222,6 @@ let pmulti =  pmany1 (pright (pstr ", ") (pstring))
 let pmanynames = pseq (pstring) (pmulti) (fun (a, b) -> [a] @ b)
 let pname = ((pmanynames) <|> ((pstring) |>> (fun a -> [a]))) |>> name
 
-(*  Parsing a name 
-
-    Case 1: it only has one string as a name
-        - followed by a comma 
-        - followed by a " and"
-        - end of file
-    Case 2: it has multiple strings for names
-        - "ans" + " asda" (many of these, but once its and stop)
-
- *)
-
 
 (*
     Exception parsers: all return Exception type
@@ -269,4 +262,6 @@ let parse(s: string) : Expr option =
     let input = prepare s
     match grammar input with
     | Success(res, _) -> Some res
-    | Failure(_, _) -> None
+    | Failure(_, _) -> failwith "usage: please input in correct formula. Some examples are: 
+    cold spring salad
+    warm winter salad with nuts, (artichokes)"

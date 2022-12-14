@@ -17,6 +17,7 @@
     <Compile Include="ListGenerator.fs" />
     <Compile Include="Evaluator.fs" />
     <Compile Include="CSVTesting.fs" />
+    <Compile Include="Rules.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
