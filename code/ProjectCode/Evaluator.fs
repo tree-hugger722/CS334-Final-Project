@@ -142,7 +142,7 @@ let getIngredients (foodCat: Category) (season: Season) (ingredients: Ingredient
 let randomIngrGen (foodCat: Category) (season: Season) (ingredients: Ingredient list)(excludedIngrs: Ingredient list)= 
     let list = getIngredients (foodCat) (season) (ingredients)
 
-    // Function that takes in an ingredient and checks if it is in the list of
+    // function that takes in an ingredient and checks if it is in the list of
     // ingredients to exclude
     // Returns Some if so, None otherwise
     let excludeChooser (ingr: Ingredient)=
@@ -189,6 +189,9 @@ let updateList (ingredientAdded:Ingredient) (includedIngrs:Ingredient list) =
 let saladGen (season: Season) (except: Parser.Exception): Ingredient list = 
     let (includedIngrs,excludedIngrs)= processExceptions except
 
+    // function that takes in a season, ingredient list, ingredients to include,
+    // ingredients to exclude, and a category list and returns a list of ingredients
+    // for each category that abide by the inclusion/exclusion rules
     let rec saladIngrGen season ingr_list excludedIngrs includedIngrs cat_list= 
         match cat_list with
         | x::xs -> 
