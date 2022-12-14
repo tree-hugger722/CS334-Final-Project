@@ -1,13 +1,13 @@
 Minimum updates to complete before submitting the project: 
 1. Update evaluator to:
-    a) accept exception inputs to INCLUDE certain ingredients
-    b) process attributes
-    c) generate a different salad based on attribute inputs
-2. Update parser to:
-    a) Accept multi-word names of ingredients to include or exclude
-3. Update tests to:
+    a) process attributes
+    b) generate a different salad based on attribute inputs
+2. Update tests to:
     a) test the parser individually
     b) test the evaluator individually
+3. Other updates:
+    a) add an AST.fs file with all our abstract types
+    b) update usage with examples and sample outputs
 4. Update specification document to reflect whatever the final version of the project is
 
 Stretch updates:
