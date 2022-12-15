@@ -186,7 +186,7 @@ let updateList (ingredientAdded:Ingredient) (includedIngrs:Ingredient list) =
     salad generator: returns a list of ingredients for salad
     salad contains (for now): 2 greens (seasonal), one vegetable(seasonal), one dressing
  *)
-let saladGen (season: Season) (except: Parser.Exception): Ingredient list = 
+let saladGen (season: Season) (except: Parser.Exception) (temp: Temperature): Ingredient list = 
     let (includedIngrs,excludedIngrs)= processExceptions except
 
     // function that takes in a season, ingredient list, ingredients to include,
@@ -204,8 +204,13 @@ let saladGen (season: Season) (except: Parser.Exception): Ingredient list =
                 (saladIngrGen season ingr_list excludedIngrs newIncludedIngrs xs)@new_ingredient
         | [] -> []
     
-    let cat_list = [Green; Vegetable; Vegetable; Cheese; Nut; Dressing]
-    saladIngrGen season ingr_list excludedIngrs includedIngrs cat_list
+    match temp with 
+    | Warm ->
+        let warm_salad = [Grain; Vegetable; Legume; Onion; Cheese; Herb; Herb; Dressing]
+        saladIngrGen season ingr_list excludedIngrs includedIngrs warm_salad
+    | Cold ->
+        let cold_salad = [Green; Vegetable; Vegetable; Cheese; Nut; Dressing]
+        saladIngrGen season ingr_list excludedIngrs includedIngrs cold_salad
 
 
 (**************************PRINTING**************************)
@@ -249,9 +254,16 @@ let eval expression =
     | Some ast -> 
         match ast with 
         |Recipe(attribute, Dish(season, dish_type, recipe_exception)) -> 
-            let a = prettyprint (saladGen season recipe_exception) 
-            printf "%s\n" a
-            a
+            match attribute with
+            | AttributeOne x-> 
+                let a = prettyprint (saladGen season recipe_exception x) 
+                printf "%s\n" a
+                a
+            | _ ->
+                // Sets default salad temperature to cold
+                let a = prettyprint (saladGen season recipe_exception Cold) 
+                printf "%s\n" a
+                a
 
     | None -> 
             let b = "Invalid"
