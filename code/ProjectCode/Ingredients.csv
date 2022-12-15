@@ -6,6 +6,7 @@ Arugula,0.250,Bunch,1,0,1,1,Greens
 Butter Lettuce,0.125,Head,0,0,1,1,Greens
 Escarole Lettuce,0.125,Head,0,0,1,1,Greens
 Romaine Lettuce,0.125,Head,0,0,1,1,Greens
+Cabbage,0.125,Head,0,1,0,0,Greens
 Spinach,0.250,Bunch,1,0,1,1,Greens
 Carrot,4.000,Ounce,1,1,1,0,Vegetable
 Celery,3.000,Ounce,1,0,1,0,Vegetable
@@ -25,7 +26,6 @@ Summer Squash,5.000,Ounce,0,0,1,0,Vegetable
 Butternut Squash,5.000,Ounce,1,1,0,0,Vegetable
 Delicata Squash,5.000,Ounce,1,1,0,0,Vegetable
 Tomato,0.500,Cup,0,0,1,0,Vegetable
-Cabbage,0.125,Head,0,1,0,0,Vegetable
 Parsnip,4.000,Ounce,0,1,0,0,Vegetable
 Turnip,2.000,Whole,1,1,1,0,Vegetable
 Bell Pepper,1.000,Whole,0,0,1,0,Vegetable
