@@ -6,7 +6,7 @@ module Rules
 let printRules = 
     printfn "Before we get started, we would like to lay down a few ground rules so that you can 
 get the salad of your dreams. Our program takes a specifc format so that it doesn't get confused
-and accidentally output something else, like a steak recipe or focaccia (ewwww, meat and gluten). \n"
+and accidentally output something else, like a steak recipe or focaccia (ewwwww, meat and gluten). \n"
 
     printfn "However, we know you're hungry, so we will keep this brief. \n"
 
