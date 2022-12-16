@@ -16,7 +16,44 @@ type TestClass () =
     let cold_salad_len = 7
     let warm_salad_len = 9
 
-    (***** PARSER TESTS *****)
+                                                    (***** PARSER TESTS *****)
+
+    (*No attributes, no exceptions*)
+    [<TestMethod>]
+    member this.testSummerSalad () =
+        let input = "summer salad"
+        let expected = Recipe(NoAttribute, Dish (Summer, Salad, NoException))
+        let result = parse input
+        match result with 
+        |Some ast ->
+            Assert.AreEqual(expected, ast)
+        |None ->
+            Assert.IsTrue(false)
+    
+     (* Attribute and exceptions *)
+    [<TestMethod>]
+    member this.testWarmWinterSalad () =
+        let input = "warm winter salad"
+        let expected = Recipe(AttributeOne Warm, Dish (Winter, Salad, NoException))
+        let result = parse input
+        match result with 
+        |Some ast ->
+            Assert.AreEqual(expected, ast)
+        |None ->
+            Assert.IsTrue(false)
+    
+    (* Attribute and exceptions *)
+    [<TestMethod>]
+    member this.testColdSpringSalad () =
+        let input = "cold spring salad"
+        let expected = Recipe(AttributeOne Cold, Dish (Spring, Salad, NoException))
+        let result = parse input
+        match result with 
+        |Some ast ->
+            Assert.AreEqual(expected, ast)
+        |None ->
+            Assert.IsTrue(false)
+
     (* Single Exception, Attribute *)
     [<TestMethod>]
     member this.testWarmSpringSaladWithCheese () =
@@ -28,15 +65,75 @@ type TestClass () =
             Assert.AreEqual(expected, ast)
         |None ->
             Assert.IsTrue(false)
+    
+    (* Multiple Exceptions, no attribute *)
+    [<TestMethod>]
+    member this.testFallSaladWithCheeseRadishNoNuts () =
+        let input = "fall salad with cheese, (Radish)"
+        let expected = Recipe(NoAttribute, Dish (Fall, Salad, SoftCore(Include, [Cat Cheese; StrName "radish"])))
+        let result = parse input
+        match result with 
+        |Some ast ->
+            Assert.AreEqual(expected, ast)
+        |None ->
+            Assert.IsTrue(false)
+    
+     (* Attribute and exceptions *)
+    [<TestMethod>]
+    member this.testWarmFallSaladWithCheeseRadishNoNuts () =
+        let input = "warm fall salad with cheese, (Lettuce) and without nuts"
+        let expected = Recipe(AttributeOne Warm, Dish (Fall, Salad, HardCore (SoftCore(Include, [Cat Cheese; StrName "lettuce"]), SoftCore(Exclude, [Cat Nut]))))
+        let result = parse input
+        match result with 
+        |Some ast ->
+            Assert.AreEqual(expected, ast)
+        |None ->
+            Assert.IsTrue(false)
+    
+     (* Attribute and exceptions *)
+    [<TestMethod>]
+    member this.testColdSpringSaladWithoutButternutSquash () =
+        let input = "warm fall salad without (Butternut Squash)"
+        let expected = Recipe(AttributeOne Warm, Dish (Fall, Salad, SoftCore(Exclude, [StrName "butternut squash"])))
+        let result = parse input
+        match result with 
+        |Some ast ->
+            Assert.AreEqual(expected, ast)
+        |None ->
+            Assert.IsTrue(false)
+    
+    (* Attribute and exceptions *)
+    [<TestMethod>]
+    member this.testColdSpringSaladWithoutButternutSquashCheese () =
+        let input = "warm fall salad without (Butternut Squash), (Aged Cheddar)"
+        let expected = Recipe(AttributeOne Warm, Dish (Fall, Salad, SoftCore (Exclude, [StrName "butternut squash"; StrName "aged cheddar"])))
+        let result = parse input
+        match result with 
+        |Some ast ->
+            Assert.AreEqual(expected, ast)
+        |None ->
+            Assert.IsTrue(false)
+    
 
     (* Incorrect Ingredient Syntax *)
     [<TestMethod>]
     member this.testIncorrectIngredient () =
-        // don't test the specific error output, but test that it fails
-        0
+        let input = "fall salad with Butternut Squash"
+        let result = parse input
+        Assert.ThrowsException<Exception>((fun _ -> parse input |> ignore), "usage: please input in correct formula. Some examples are: 
+        cold spring salad
+        warm winter salad with nuts, (artichokes)")
 
+    (* Incorrect spelling *)
+    [<TestMethod>]
+    member this.misspellInput () =
+        let input = "fallg salad"
+        let result = parse input
+        Assert.ThrowsException<Exception>((fun _ -> parse input |> ignore), "usage: please input in correct formula. Some examples are: 
+        cold spring salad
+        warm winter salad with nuts, (artichokes)")
 
-    (***** EVALUATOR TESTS *****)  
+                                                     (***** EVALUATOR TESTS *****)  
     (* Single Exception (including an ingredient) *)
     [<TestMethod>]
     member this.testIncludeSingleIngredient () =
@@ -46,7 +143,6 @@ type TestClass () =
 
         Assert.IsTrue(output.Contains "Swiss Chard")
         Assert.AreEqual(cold_salad_len, output_lines.Length)
-
 
     (* Single Exception (excluding an ingredient) *)
     [<TestMethod>]
@@ -61,7 +157,7 @@ type TestClass () =
     (* Single Exception (including a category) *)
     [<TestMethod>]
     member this.testIncludeSingleCategory () =
-        0
+        Assert.IsTrue(true)
 
     (* Single Exception (excluding a category) *)
     [<TestMethod>]
@@ -80,7 +176,6 @@ type TestClass () =
     (* Double Exception (two categories) *)
     (* Double Exception (one category, one ingredient) *)
     (* No Exception *)
-
 
     (***** END-TO-END TESTS *****) 
 
@@ -114,9 +209,3 @@ type TestClass () =
         //recipe should have six lines, fail test otherwise
         Assert.AreEqual(warm_salad_len, length)
 
-
-
-
-    
-
-        
