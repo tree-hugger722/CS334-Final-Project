@@ -39,7 +39,7 @@ let ingredients = DynamicIngredient.Load(ResolutionFolder + "/" + IngredientCSV)
     Ingredient type: take a string for ingredient name, a decimal for quantity (serving size for one person), a
     unit for measurement, list of seasons during which it can be used, and food category
  *)
-type Ingredient = {Name:string; Quantity:decimal; Unit:Unit; Season_List: Season List; Category: Category}
+type Ingredient = {Name:string; Quantity:float; Unit:Unit; Season_List: Season List; Category: Category}
 
 // Converts list of four booleans to seasons, according to the CSV season input
 let rec convertBoolToSeason (season_list: Season list) (bool_list: bool list)=
@@ -87,7 +87,7 @@ let convertToUnit (input: string) =
 // Organize data from CSV into a list of Ingredients
 let formatInput = 
     ingredients.Rows 
-        |> Seq.map (fun row -> {Name=row.Name; Quantity=row.Quantity; Unit=(convertToUnit row.Unit); Season_List=(convertBoolToSeason ([]) ([row.Fall; row.Winter; row.Summer; row.Spring])); Category=(convertToCategory row.Category);})
+        |> Seq.map (fun row -> {Name=row.Name; Quantity= float(row.Quantity); Unit=(convertToUnit row.Unit); Season_List=(convertBoolToSeason ([]) ([row.Fall; row.Winter; row.Summer; row.Spring])); Category=(convertToCategory row.Category);})
         |> Seq.sortBy (fun ingredient -> ingredient.Category)
         |> Seq.toList
 

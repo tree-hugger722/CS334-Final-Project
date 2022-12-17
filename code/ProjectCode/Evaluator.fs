@@ -220,19 +220,19 @@ let saladGen (season: Season) (except: Parser.Exception) (temp: Temperature): In
  *)
 let ingredientPrint (i: Ingredient) = 
     if i.Unit = Bunch then 
-        if i.Quantity = 1.000M then
+        if i.Quantity = 1.000 then
             let output = sprintf "\n%A %A of %s" i.Quantity i.Unit i.Name
             output
         else 
             let output = sprintf "\n%A %Aes of %s" i.Quantity i.Unit i.Name
             output
     else if i.Unit = Whole then 
-        if i.Quantity = 1.000M then
+        if i.Quantity = 1.000 then
             sprintf "\n%A %s" i.Quantity i.Name
         else
             sprintf "\n%A %ss" i.Quantity i.Name
     else
-        if i.Quantity = 1.000M then
+        if i.Quantity = 1.000 then
             sprintf "\n%A %A of %s" i.Quantity i.Unit i.Name
         else 
             sprintf "\n%A %As of %s" i.Quantity i.Unit i.Name
