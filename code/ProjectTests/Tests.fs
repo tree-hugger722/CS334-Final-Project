@@ -17,7 +17,7 @@ open Microsoft.VisualStudio.TestTools.UnitTesting
 type TestClass () =
 
     let cold_salad_len = 7
-    let warm_salad_len = 9
+    let warm_salad_len = 10
 
     (***** PARSER TESTS *****)
     (*No attributes, no exceptions*)
@@ -203,15 +203,47 @@ type TestClass () =
         Assert.AreEqual(beet, {Name="Beet"; Quantity=4.000M; Unit=Ounce; Season_List=[Summer;Winter;Fall]; Category=Vegetable})
 
     (* Double Exception (two categories) *)
+    [<TestMethod>]
+    member this.testExcludeTwoCategories () =
+        let input = Some (Recipe(AttributeOne Cold, Dish (Fall, Salad, SoftCore (Exclude, [Cat Vegetable; Cat Dressing]))))
+        let output = eval input
+        let output_lines = output.Split '\n'
+
+        // Check that there are two fewer ingredients than normal
+        Assert.AreEqual(cold_salad_len-3, output_lines.Length)
+
     (* Double Exception (one category, one ingredient) *)
+    [<TestMethod>]
+    member this.testExcludeCategoryAndIngredient () =
+        let input = Some (Recipe(AttributeOne Warm, Dish (Fall, Salad, HardCore (SoftCore (Exclude, [Cat Vegetable]), SoftCore (Include, [StrName "roasted pistachios"])))))
+        let output = eval input
+        let output_lines = output.Split '\n'
+
+        // Check that there are two fewer ingredients than normal
+        Assert.AreEqual(warm_salad_len-1, output_lines.Length)
+
+        let except = HardCore (SoftCore (Exclude, [Cat Vegetable]), SoftCore (Include, [StrName "roasted pistachios"]))
+        let recipe = (saladGen Fall except Warm)
+        let pistachio = List.find (fun x -> x.Name = "Roasted Pistachios") recipe
+        Assert.AreEqual(pistachio, {Name="Roasted Pistachios"; Quantity=0.500M; Unit=Cup; Season_List=[Spring;Summer;Winter;Fall]; Category=Nut})
+
     (* No Exception *)
+    [<TestMethod>]
+    member this.testNoException () =
+        let input = Some (Recipe(AttributeOne Warm, Dish (Fall, Salad, NoException)))
+        let output = eval input
+        let output_lines = output.Split '\n'
+
+        // Check that there are two fewer ingredients than normal
+        Assert.AreEqual(warm_salad_len, output_lines.Length)
 
 
     (***** END-TO-END TESTS *****) 
-    (* Tests that cold salads excluding a single category have the correct length *)
+    (* Tests that cold salads excluding a single category and including a single
+    ingredient have the correct length *)
     [<TestMethod>]
-    member this.testColdSpringSaladWithoutNuts () =
-        let input = "cold spring salad without nuts"
+    member this.testColdSpringSaladWithoutNutsWithCuke () =
+        let input = "cold spring salad without nuts and with (cucumber)"
         let output = eval (parse input)
 
         //put each line of string output as an element in the array
@@ -220,7 +252,7 @@ type TestClass () =
         let length = output_substring.Length
         printf "length: %i" length
 
-        //recipe should have six lines + 1 (including extra return at the end), fail test otherwise
+        //recipe should have six lines + 1 (including extra return at the end)
         Assert.AreEqual(cold_salad_len-1, length)
 
     (* Tests that warm salads excluding a single category have the correct length *)
@@ -236,5 +268,5 @@ type TestClass () =
         printf "length: %i" length
 
         //recipe should have six lines, fail test otherwise
-        Assert.AreEqual(warm_salad_len, length)
+        Assert.AreEqual(warm_salad_len-1, length)
 
