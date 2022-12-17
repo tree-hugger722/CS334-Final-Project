@@ -4,6 +4,7 @@ open DataReader
 open ListGenerator
 open DataReader
 open System
+open AST
 
 (* NOTE: ingr_list is the list of ingredients populated from an ingredient CSV. See ListGenerator.fs for more information. *)
 
@@ -76,7 +77,7 @@ let rec processIngrsToInclude (nameList: Name list) : (Ingredient list)=
     exception processer: takes in an exception type and returns a tuple containing
     a list of ingredients to include, and a list of ingredients to exclude
 *)
-let rec processExceptions (except: Parser.Exception) : (Ingredient list * Ingredient list)=
+let rec processExceptions (except: AST.Exception) : (Ingredient list * Ingredient list)=
     match except with
     | SoftCore(flag, names) -> 
         // find the corresponding ingredient if it exists
@@ -186,7 +187,7 @@ let updateList (ingredientAdded:Ingredient) (includedIngrs:Ingredient list) =
     salad generator: returns a list of ingredients for salad
     salad contains (for now): 2 greens (seasonal), one vegetable(seasonal), one dressing
  *)
-let saladGen (season: Season) (except: Parser.Exception) (temp: Temperature): Ingredient list = 
+let saladGen (season: Season) (except: AST.Exception) (temp: Temperature): Ingredient list = 
     let (includedIngrs,excludedIngrs)= processExceptions except
 
     // function that takes in a season, ingredient list, ingredients to include,

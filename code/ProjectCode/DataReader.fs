@@ -1,6 +1,7 @@
 module DataReader
 open Parser
 open FSharp.Data
+open AST
 
 
 (*

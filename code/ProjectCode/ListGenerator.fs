@@ -1,6 +1,7 @@
 module ListGenerator
 open Parser
 open DataReader
+open AST
 
 (*
     Code containing functions to generate lists helpful for outputting particular recipes
