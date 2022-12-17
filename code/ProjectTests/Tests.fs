@@ -7,6 +7,8 @@ open DataReader
 open System.IO
 open System.Runtime.Serialization.Formatters.Binary
 open Microsoft.FSharp.Core
+// open NUnit.Framework
+// open FsUnit
 
 open System
 open Microsoft.VisualStudio.TestTools.UnitTesting
@@ -128,7 +130,6 @@ type TestClass () =
     [<TestMethod>]
     member this.misspellInput () =
         let input = "fallg salad"
-        let result = parse input
         Assert.ThrowsException<Exception>((fun _ -> parse input |> ignore), "usage: please input in correct formula. Some examples are: 
         cold spring salad
         warm winter salad with nuts, (artichokes)")
