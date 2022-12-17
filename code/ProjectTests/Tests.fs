@@ -3,6 +3,7 @@ open Parser
 open Combinator
 open Evaluator
 open System
+open DataReader
 open System.IO
 open System.Runtime.Serialization.Formatters.Binary
 open Microsoft.FSharp.Core
@@ -16,8 +17,7 @@ type TestClass () =
     let cold_salad_len = 7
     let warm_salad_len = 9
 
-                                                    (***** PARSER TESTS *****)
-
+    (***** PARSER TESTS *****)
     (*No attributes, no exceptions*)
     [<TestMethod>]
     member this.testSummerSalad () =
@@ -133,7 +133,8 @@ type TestClass () =
         cold spring salad
         warm winter salad with nuts, (artichokes)")
 
-                                                     (***** EVALUATOR TESTS *****)  
+
+    (***** EVALUATOR TESTS *****)  
     (* Single Exception (including an ingredient) *)
     [<TestMethod>]
     member this.testIncludeSingleIngredient () =
@@ -157,7 +158,15 @@ type TestClass () =
     (* Single Exception (including a category) *)
     [<TestMethod>]
     member this.testIncludeSingleCategory () =
-        Assert.IsTrue(true)
+        let input = Some (Recipe(NoAttribute, Dish (Spring, Salad, SoftCore (Include, [Cat Vegetable]))))
+        let output = eval input
+        let output_lines = output.Split '\n'
+        Assert.AreEqual(cold_salad_len,output_lines.Length)
+
+        let input2 = SoftCore (Include, [Cat Vegetable])
+        let (included, excluded) = (processExceptions input2)
+        Assert.AreEqual<Ingredient list>([], included)
+        Assert.AreEqual<Ingredient list>([], excluded)
 
     (* Single Exception (excluding a category) *)
     [<TestMethod>]
@@ -166,19 +175,38 @@ type TestClass () =
         let output = eval input
         let output_lines = output.Split '\n'
 
-        // Check that none of the ingredients belong to the vegetable category
-        // NOT DONE WITH THIS!
-
         // Check that there are two fewer ingredients than normal
         Assert.AreEqual(cold_salad_len-2, output_lines.Length)
 
+        let input2 = SoftCore (Exclude, [Cat Vegetable])
+        let (included, excluded) = (processExceptions input2)
+        Assert.AreEqual(([]:Ingredient list), included)
+        for ingredient in excluded do
+            Assert.AreEqual(Vegetable, ingredient.Category)
+
     (* Double Exception (two ingredients) *)
+    [<TestMethod>]
+    member this.testIncludeTwoIngredients () =
+        let input = Some (Recipe(NoAttribute, Dish (Fall, Salad, SoftCore (Include, [StrName "butternut squash"; StrName "beet"]))))
+        let output = eval input
+        let output_lines = output.Split '\n'
+
+        // Check that there are two fewer ingredients than normal
+        Assert.AreEqual(cold_salad_len, output_lines.Length)
+
+        let except = SoftCore (Include, [StrName "butternut squash"; StrName "beet"])
+        let output = (saladGen Fall except Cold)
+        let butternut = List.find (fun x -> x.Name = "Butternut Squash") output
+        let beet = List.find (fun x -> x.Name = "Beet") output
+        Assert.AreEqual(butternut, {Name="Butternut Squash"; Quantity=5.000M; Unit=Ounce; Season_List=[Winter;Fall]; Category=Vegetable})
+        Assert.AreEqual(beet, {Name="Beet"; Quantity=4.000M; Unit=Ounce; Season_List=[Summer;Winter;Fall]; Category=Vegetable})
+
     (* Double Exception (two categories) *)
     (* Double Exception (one category, one ingredient) *)
     (* No Exception *)
 
-    (***** END-TO-END TESTS *****) 
 
+    (***** END-TO-END TESTS *****) 
     (* Tests that cold salads excluding a single category have the correct length *)
     [<TestMethod>]
     member this.testColdSpringSaladWithoutNuts () =
