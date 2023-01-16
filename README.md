@@ -2,7 +2,7 @@
 
 (c) Emma Neil, Anna Owens 2022
 
-Welcome to the repository for The Tosser, a domain-specific programming language to generate seasonal salads according to the principles of Josh McFaden and Martha Holmberg's cookbook. We build The Tosser as an independent final project for Professor Dan Barowy's Principles of Programming Languages course in the Fall 2022 semester at Williams College.
+Welcome to the repository for The Tosser, a domain-specific programming language to generate seasonal salads according to the principles of Josh McFaden and Martha Holmberg's cookbook, [_The Six Seasons_](https://www.joshuamcfadden.com/sixseasons). We build The Tosser as an independent final project for Professor Dan Barowy's Principles of Programming Languages course in the Fall 2022 semester at Williams College.
 
 ### Play with the Salad Generator ###
 To start writing programs to generate recipes, clone the repository and run the following command:
